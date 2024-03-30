@@ -4,6 +4,8 @@ import 'food.dart';
 
 class Restaurant extends ChangeNotifier{
   final List<Food> _menu = [
+
+
     // burgers
     Food(
         availableAddOn: [
@@ -54,7 +56,7 @@ class Restaurant extends ChangeNotifier{
       ],
       price: 149.0,
       name: "Nutty Protein Sandwich",
-      imagePath: "lib/assets/bread/nutty_protein_sandwich.jpeg",
+      imagePath: "lib/assets/bread/burger3.jpeg",
       description: "A power-packed sandwich featuring whole grain bread filled with creamy almond butter, mixed nuts, and an extra boost of whey protein, topped with a drizzle of honey for sweetness.",
       category: FoodCategory.bread,
     ),
@@ -66,7 +68,7 @@ class Restaurant extends ChangeNotifier{
       ],
       price: 129.0,
       name: "Veg Chilli Cheese Toast",
-      imagePath: "lib/assets/burgers/veg_chilli_cheese_toast.jpeg",
+      imagePath: "lib/assets/bread/burger4.jpeg",
       description: "A delightful combination of crispy toast topped with melted cheese and spicy chili, served with a side of crunchy potato wafers and creamy mayo & cheese dip.",
       category: FoodCategory.bread,
     ),
@@ -195,7 +197,7 @@ class Restaurant extends ChangeNotifier{
     Food(
       price: 100.0,
       name: "Hyderabadi Biryani",
-      imagePath: "lib/assets/dishes/biryani.jpeg",
+      imagePath: "lib/assets/paneer/biryani.jpeg",
       description: "Aromatic and flavorful Hyderabadi biryani, made with long-grain basmati rice, tender marinated meat, and a blend of spices.",
       category: FoodCategory.paneer,
       availableAddOn: [
@@ -207,7 +209,7 @@ class Restaurant extends ChangeNotifier{
     Food(
       price: 90.0,
       name: "Paneer Angara",
-      imagePath: "lib/assets/dishes/sabji2.jpeg",
+      imagePath: "lib/assets/paneer/sabji2.jpeg",
       description: "Paneer cubes marinated in a spicy masala and grilled to perfection, served with grilled vegetables.",
       category: FoodCategory.paneer,
       availableAddOn: [
@@ -219,7 +221,7 @@ class Restaurant extends ChangeNotifier{
     Food(
       price: 95.0,
       name: "Paneer Makhanwala",
-      imagePath: "lib/assets/dishes/sabji1.jpeg",
+      imagePath: "lib/assets/paneer/sabji1.jpeg",
       description: "Paneer cubes cooked in a creamy tomato-based gravy with butter and aromatic spices.",
       category: FoodCategory.paneer,
       availableAddOn: [
