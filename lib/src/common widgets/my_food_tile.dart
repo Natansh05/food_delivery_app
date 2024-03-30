@@ -20,12 +20,12 @@ class FoodTile extends StatelessWidget {
           onTap: onTap,
           child: Container(
             margin: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              border: Border.all(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
+            // decoration: BoxDecoration(
+            //   //borderRadius: BorderRadius.circular(12.0),
+            //   border: Border.all(
+            //     //color: Theme.of(context).colorScheme.secondary,
+            //   ),
+            // ),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
@@ -46,12 +46,25 @@ class FoodTile extends StatelessWidget {
                         ],
                       ),
                   ),
+
+                  const SizedBox(
+                    width: 15.0,
+                  ),
+
                   // food image
-                  Image.asset(food.imagePath,height: 100,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset(food.imagePath,height: 100,),
+                  ),
                 ],
               ),
             ),
           ),
+        ),
+        Divider(
+          color: Theme.of(context).colorScheme.tertiary,
+          endIndent: 25,
+          indent: 25,
         )
       ],
     );
