@@ -7,6 +7,7 @@ import 'package:myapp/src/common%20widgets/my_sliver_appbar.dart';
 import 'package:myapp/src/common%20widgets/my_tab_bar.dart';
 import 'package:myapp/src/models/food.dart';
 import 'package:myapp/src/models/restaurants.dart';
+import 'package:myapp/src/pages/food_page.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,7 +54,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           final food = categoryMenu[index];
 
           // return food tile for each food
-            return FoodTile(food: food, onTap: (){});
+            return FoodTile(food: food,
+                onTap: ()=> Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context)=> FoodPage(food: food),
+                  ),
+                ),
+            );
           },);
     }).toList();
   }
