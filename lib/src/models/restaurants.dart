@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:myapp/src/models/cart_item.dart';
 
 import 'food.dart';
 
@@ -300,21 +302,86 @@ class Restaurant extends ChangeNotifier{
    */
 
   List<Food> get menu => _menu;
+  // getter to receive the cart
+  List<CartItem> get cart=> _cart;
   /*
   OPERATIONS
    */
+
+  // creating a user cart
+  List<CartItem> _cart = [];
+
+
   // add to cart
+  void addToCart(Food food,List<AddOn> selectedAddOns){
+    CartItem? cartItem = _cart.firstWhereOrNull((item){
+      // check if selected item is the same
+      bool isSameFood = item.food==food;
+
+      // check if selected addOns are same
+      bool isSameAddons = ListEquality().equals(item.selectedAddOns, selectedAddOns);
+      return isSameFood && isSameAddons;
+    });
+
+    // if item exists increase the quantity
+    if(cartItem!=null){
+      cartItem.quantity++;
+    }
+
+    // otherwise add another item in the list
+
+    else{
+      _cart.add(CartItem(food: food, selectedAddOns: selectedAddOns));
+    }
+      notifyListeners();
+  }
+
 
   // remove from cart
+  void removeFromCart(CartItem cartItem){
+    int cartIndex = _cart.indexOf(cartItem);
+    if(cartIndex!=-1){
+      if(_cart[cartIndex].quantity>1){
+        _cart[cartIndex].quantity--;
+      }
+      else{
+        _cart.remove(cartIndex);
+      }
+      notifyListeners();
+    }
+  }
 
 
-  // see total number of items in cart
+  // see total price of items in cart
+  double getTotalPrice(){
+    double total = 0.0;
+    for(CartItem cartItem in _cart){
+      double itemTotal = cartItem.food.price;
+      for(AddOn addOn in cartItem.selectedAddOns){
+        itemTotal+=addOn.price;
+      }
+      total+=itemTotal;
+      notifyListeners();
+    }
+    return total;
+  }
 
 
-  // get total price of items in cart
+  // get total number of items in cart
+  int getTotalItems(){
+    int cnt = 0;
+    for(CartItem cartItem in _cart){
+      cnt+=cartItem.quantity;
+    }
+    return cnt;
+  }
 
 
   // clear cart
+  void clearCart(){
+    _cart.clear();
+    notifyListeners();
+  }
 
   /*
   HELPERS
