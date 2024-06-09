@@ -19,10 +19,10 @@ class MyQuantitySelector extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.inversePrimary,
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(10.0),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.onPrimary,
         )
       ),
       padding: EdgeInsets.all(10.0),

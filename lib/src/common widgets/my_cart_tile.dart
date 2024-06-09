@@ -1,6 +1,4 @@
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_quantity_selector.dart';
 import 'package:myapp/src/models/cart_item.dart';
@@ -20,8 +18,8 @@ class MyCartTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
 
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30.0),
-          color: Theme.of(context).colorScheme.inversePrimary,
+          borderRadius: BorderRadius.circular(20.0),
+          color: Theme.of(context).colorScheme.secondary,
         ),
 
         // color: Theme.of(context).colorScheme.background,
@@ -63,7 +61,7 @@ class MyCartTile extends StatelessWidget {
 
                   // food image
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset(
                         cartItem.food.imagePath,
                     height: 100.0,
@@ -82,7 +80,7 @@ class MyCartTile extends StatelessWidget {
                 padding: EdgeInsets.only(left: 10,bottom: 10,right: 10),
                 scrollDirection: Axis.horizontal,
                 children: cartItem.selectedAddOns.map((addOn) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 10.0),
                   child: FilterChip(
                       label: Row(
 
@@ -103,7 +101,7 @@ class MyCartTile extends StatelessWidget {
                       ),
                       onSelected: (value){
                       },
-                    backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                   ),
 
                 ),

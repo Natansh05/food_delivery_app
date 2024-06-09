@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/src/models/cart_item.dart';
+import 'package:myapp/src/pages/payment_page.dart';
 
 import 'food.dart';
 
@@ -388,14 +392,46 @@ class Restaurant extends ChangeNotifier{
    */
 
   // generate a receipt
+String displayCartReceipt(){
+  final receipt = StringBuffer();
+  receipt.writeln("Here's your receipt----->");
+  receipt.writeln();
+
+//   formatted date to include up to seconds only
+
+String formattedDate =  DateFormat.yMMMMd('en_US').format(DateTime.now());
+String formattedTime =  DateFormat.jm().format(DateTime.now());
+  receipt.writeln('Date of Order : ' + formattedDate);
+  receipt.writeln('Time Stamp of order : ' + formattedTime);
+  // receipt.writeln('Mode of payment: ${isCod ? 'Cash on Delivery' : 'UPI'}');
+  receipt.writeln('-----------------------------------------');
+
+  for(final cartItem in _cart){
+    receipt.writeln('${cartItem.quantity} x ${cartItem.food.name} : ${_formatPrice(cartItem.food.price)}');
+    if(cartItem.selectedAddOns.isNotEmpty){
+      receipt.writeln('Add-Ons :- ${_formatAddons(cartItem.selectedAddOns)}');
+      receipt.writeln();
+  }
+  }
+
+  receipt.writeln('-----------------------------------------');
+  receipt.writeln();
+    receipt.writeln('Total Price : ${_formatPrice(getTotalPrice())}');
+    receipt.writeln('Total Items : ${getTotalItems()}');
+
+  return receipt.toString();
+}
 
 
   // format double value into money
-
+  String _formatPrice(double price){
+    return '₹ ' + '${price.toStringAsFixed(2)}';
+  }
 
   // format list of addons into string summary 
-
-
+  String _formatAddons(List<AddOn> addons){
+    return addons.map((addOn) =>' ${addOn.name} : ${_formatPrice(addOn.price)}').join(", ");
+  }
 
 
 }

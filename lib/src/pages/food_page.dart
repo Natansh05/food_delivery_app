@@ -57,6 +57,7 @@ class _FoodPageState extends State<FoodPage> {
                 // food image
                 ClipRRect(
                     child: Image.asset(widget.food.imagePath),
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class _FoodPageState extends State<FoodPage> {
                     Text(widget.food.description,
                       style: TextStyle(
                         fontSize: 15.0,
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
             
@@ -93,14 +94,14 @@ class _FoodPageState extends State<FoodPage> {
                       height: 10.0,
                     ),
                      Divider(
-                       color: Theme.of(context).colorScheme.secondary,
+                       color: Theme.of(context).colorScheme.onPrimary,
                      ),
             
                      Text("Add-Ons",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
-                        color: Theme.of(context).colorScheme.inversePrimary,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     const SizedBox(

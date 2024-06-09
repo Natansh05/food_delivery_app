@@ -68,12 +68,13 @@ class CartPage extends StatelessWidget {
                         ),
                     ),
                     // checkout button
-                    MyButton(
-                        onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>const PaymentPage())),
-                        text: "Proceed to pay"),
-                    const SizedBox(
-                      height: 25.0,
-                    )
+                    if(userCart.isNotEmpty)
+                      MyButton(
+                          onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>const PaymentPage())),
+                          text: "Proceed to pay"),
+                      const SizedBox(
+                        height: 25.0,
+                      )
 
                   ],
                 ),

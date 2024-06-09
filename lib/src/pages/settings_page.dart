@@ -31,13 +31,13 @@ class SettingsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
-                Text("Light Mode ",
+                Text("Dark Mode ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.inversePrimary,
                 ),),
                 CupertinoSwitch(
-                    value: Provider.of<ThemeProvider>(context,listen: false).isDarkMode,
+                    value: Provider.of<ThemeProvider>(context,listen: true).isDarkMode,
                     onChanged: (value)=>Provider.of<ThemeProvider>(context,listen: false).toggleTheme(),
                 ),
               ],

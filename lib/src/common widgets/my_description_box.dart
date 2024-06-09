@@ -10,7 +10,7 @@ class MyDescriptionBox extends StatelessWidget {
   Widget build(BuildContext context) {
 
     var myPrimaryTextStyle = TextStyle(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      color: Theme.of(context).colorScheme.primary,
     );
 
     var mySecondaryTextStyle = TextStyle(
