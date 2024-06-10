@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
@@ -19,10 +21,15 @@ class _RegisterPageState extends State<RegisterPage> {
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController confirmPasswordController = TextEditingController();
 
-    void register() async{
+    Future<void> register() async{
+      //show a loading circle
+      showDialog(context: context, builder: (context){
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      });
       // auth gate code
       final _authService = AuthService();
-      print('check 1');
       if(passwordController.text == confirmPasswordController.text){
           try{
             await _authService.signUpWithEmailPassword(emailController.text, passwordController.text);
@@ -87,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
             
                 //username textfield
-                MyTextField(hintText: 'Username', obscureText: false,controller: emailController,),
+                MyTextField(hintText: 'Email Id', obscureText: false,controller: emailController,check: false,),
             
                 const SizedBox(
                   height: 15.0,
@@ -95,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
             
                 //password
-                MyTextField(hintText: 'Password', obscureText: true,controller: passwordController,),
+                MyTextField(hintText: 'Password', obscureText: true,controller: passwordController,check : true),
             
                 //forgot password ?
                 const SizedBox(
@@ -104,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
             
                 //password
-                MyTextField(hintText: 'Confirm Password', obscureText: true,controller: confirmPasswordController,),
+                MyTextField(hintText: 'Confirm Password', obscureText: true,controller: confirmPasswordController,check: true,),
             
             
                 // login

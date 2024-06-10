@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:myapp/src/themes/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class AuthService {
   // Instance of FirebaseAuth
@@ -50,7 +53,10 @@ class AuthService {
   }
 
   // Sign out
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await _firebaseAuth.signOut();
+    Provider.of<ThemeProvider>(context, listen: false).setLightMode();
   }
 }
+
+

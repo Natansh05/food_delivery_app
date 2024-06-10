@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
+import 'package:myapp/Services/auth/login_or_register.dart';
 import 'package:myapp/src/common%20widgets/my_drawer_tile.dart';
 
+import '../pages/profile_page.dart';
 import '../pages/settings_page.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -16,7 +18,8 @@ class MyDrawer extends StatelessWidget {
     Future<void> signOut() async{
       final _authService = AuthService();
       try{
-        await _authService.signOut();
+        await _authService.signOut(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginOrRegister()));
       }
       catch (e){
         showDialog(context: context, builder: (context)=>AlertDialog(
@@ -54,6 +57,13 @@ class MyDrawer extends StatelessWidget {
           MyDrawerTile(text: 'H O M E', icon: Icons.home, 
               onTap: ()=> Navigator.pop(context),),
           // settings list tile
+
+          // profile list tile
+          MyDrawerTile(text: 'P R O F I L E', icon: Icons.person,
+              onTap: (){
+            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage()));
+              }),
           MyDrawerTile(text: 'S E T T I N G S', icon: Icons.settings,
               onTap: (){
             Navigator.pop(context);

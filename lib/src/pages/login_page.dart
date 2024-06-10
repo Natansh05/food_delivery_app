@@ -18,13 +18,20 @@ class LoginPage extends StatelessWidget {
 
 
     //login method
+    //login method
     Future<void> signUserIn() async {
-      /*
-        Complete authentication method here
-      */
+      //show a loading circle
+      showDialog(context: context, builder: (context){
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      });
       final _authService = AuthService();
       try{
         await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
+
+        // transfer to home page if login done
+        Navigator.push(context,MaterialPageRoute(builder: ((context) => const HomePage())));
       }
       catch (e){
         showDialog(context: context, builder: (context)=> AlertDialog(
@@ -35,9 +42,9 @@ class LoginPage extends StatelessWidget {
 
 
 
-      // transfer to home page if login done
-      Navigator.push(context,MaterialPageRoute(builder: ((context) => const HomePage())));
+
     }
+
 
 
     return Scaffold(
@@ -82,7 +89,7 @@ class LoginPage extends StatelessWidget {
           
           
                 //username textfield
-                MyTextField(hintText: 'Username', obscureText: false,controller: emailController,),
+                MyTextField(hintText: 'Username', obscureText: false,controller: emailController,check: false,),
           
                 const SizedBox(
                   height: 20.0,
@@ -90,7 +97,7 @@ class LoginPage extends StatelessWidget {
           
           
                 //password
-                MyTextField(hintText: 'Password', obscureText: true,controller: passwordController,),
+                MyTextField(hintText: 'Password', obscureText: true,controller: passwordController,check: true,),
           
                 //forgot password ?
                 const SizedBox(height: 10,),

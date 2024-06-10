@@ -1,47 +1,72 @@
 import 'package:flutter/material.dart';
 
-class MyTextField extends StatelessWidget {
-  final controller;
+class MyTextField extends StatefulWidget {
+  final TextEditingController controller;
+  final bool check;
   final String hintText;
   final bool obscureText;
 
   const MyTextField({
-    super.key,
+    Key? key,
+    required this.check,
     required this.controller,
     required this.hintText,
-    required this.obscureText
-  });
+    required this.obscureText,
+  }) : super(key: key);
+
+  @override
+  _MyTextFieldState createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  bool _obscureText = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController();
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
-        controller: controller,
-        obscureText: obscureText,
+        controller: widget.controller,
+        obscureText: _obscureText,
         decoration: InputDecoration(
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.white,
             ),
           ),
-          suffixIcon: IconButton(
-            onPressed: (){
-              controller.clear();
+          suffixIcon: widget.check
+              ? IconButton(
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
             },
-            icon: Icon(Icons.clear),
-
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Theme.of(context).colorScheme.onPrimary, // Set icon color here
+            ),
+          )
+              : IconButton(
+            onPressed: () {
+              widget.controller.clear();
+            },
+            icon: const Icon(Icons.clear),
+            color: Theme.of(context).colorScheme.onPrimary, // Set icon color here
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.grey.shade400,
             ),
           ),
-
           fillColor: Colors.grey.shade200,
           filled: true,
-          hintText: hintText,
+          hintText: widget.hintText,
           hintStyle: TextStyle(
             color: Colors.grey[500],
           ),

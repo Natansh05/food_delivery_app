@@ -14,25 +14,23 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   bool isDelivery = true;
   bool isCod = true;
-  final TextEditingController _name = TextEditingController();
-  final TextEditingController _phone = TextEditingController();
+ // String _name = "";
+ // String _phone = "";
+  final TextEditingController name = TextEditingController();
+  final TextEditingController phone = TextEditingController();
+
   // final ValueNotifier<bool> _showError = ValueNotifier<bool>(true);
   bool showError = false;
+
   @override
   void initState() {
     super.initState();
-    // _name.addListener(_validateInputs);
-    // _phone.addListener(_validateInputs);
-    // _validateInputs();
   }
 
   @override
   void dispose() {
-    // _name.removeListener(_validateInputs);
-    // _phone.removeListener(_validateInputs);
-    _name.dispose();
-    _phone.dispose();
-    // _showError.dispose();
+    name.dispose();
+    phone.dispose();
     super.dispose();
   }
 
@@ -42,23 +40,12 @@ class _PaymentPageState extends State<PaymentPage> {
   //   });
   // }
 
-  void _updatePaymentMode(bool value) {
-    setState(() {
-      isCod = value;
-    });
-  }
-
-  void _updateDeliveryStatus(bool value) {
-    setState(() {
-      isDelivery = value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.secondary,
         title: const Text("Order Confirmation"),
         centerTitle: true,
@@ -68,7 +55,7 @@ class _PaymentPageState extends State<PaymentPage> {
           child: Column(
             children: [
               const SizedBox(
-                height: 25.0,
+                height: 30.0,
               ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -100,15 +87,17 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
               const SizedBox(height: 15.0),
               MyTextField(
-                controller: _name,
+                controller: name,
                 hintText: 'Name*',
                 obscureText: false,
+                check: false,
               ),
               const SizedBox(height: 25.0),
               MyTextField(
-                controller: _phone,
+                controller: phone,
                 hintText: 'Phone*',
                 obscureText: false,
+                check: true,
               ),
               const SizedBox(height: 25.0),
               const Row(
