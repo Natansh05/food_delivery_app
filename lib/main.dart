@@ -5,6 +5,7 @@ import 'package:myapp/Services/auth/auth_gate.dart';
 import 'package:myapp/Services/auth/login_or_register.dart';
 import 'package:myapp/firebase_options.dart';
 import 'package:myapp/src/models/restaurants.dart';
+import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/home_page.dart';
 import 'package:myapp/src/pages/login_page.dart';
 import 'package:myapp/src/pages/register_page.dart';
@@ -21,6 +22,7 @@ void main() async{
       ChangeNotifierProvider(create: (context)=>ThemeProvider()),
       // restaurant provider
       ChangeNotifierProvider(create: (context)=>Restaurant()),
+      ChangeNotifierProvider(create: (context) => UserData()),
     ],
       child: const MyApp(),
     ),

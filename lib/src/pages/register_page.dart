@@ -1,9 +1,12 @@
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
+import 'package:myapp/Services/database/firestore.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_textfield.dart';
+
+import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -21,18 +24,38 @@ class _RegisterPageState extends State<RegisterPage> {
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController confirmPasswordController = TextEditingController();
 
+    Future addUser(User? user,String email,String password) async{
+      final FirestoreService db = FirestoreService();
+      Map<String, dynamic> addUserInfo = {
+        "Password": password,
+        "Email": email,
+        "Id": user!.uid,
+      };
+      db.addUserDetail(addUserInfo, user.uid);
+
+    }
+
     Future<void> register() async{
-      //show a loading circle
-      showDialog(context: context, builder: (context){
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      });
-      // auth gate code
+      final email = emailController.text;
+      final password = passwordController.text;
+
       final _authService = AuthService();
       if(passwordController.text == confirmPasswordController.text){
           try{
             await _authService.signUpWithEmailPassword(emailController.text, passwordController.text);
+            User? user = _authService.getCurrentUser();
+            addUser(user, email, password);
+            Navigator.push(context,MaterialPageRoute(builder: ((context) => const HomePage())));
+
+            ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                content: const Center(
+                  child: Text(
+                    "Logged - In Successfully",
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ))));
+
           }
           catch (e){
             showDialog(context: context, builder: (context)=>AlertDialog(
@@ -40,6 +63,7 @@ class _RegisterPageState extends State<RegisterPage> {
               title: Text(e.toString()),
             ));
           }
+
       }
       else{
         showDialog(context: context,
@@ -112,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
             
                 //password
                 MyTextField(hintText: 'Confirm Password', obscureText: true,controller: confirmPasswordController,check: true,),
-            
+
             
                 // login
                 const SizedBox(

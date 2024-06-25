@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/src/models/cart_item.dart';
-import 'package:myapp/src/pages/payment_page.dart';
 
 import 'food.dart';
 
@@ -300,7 +297,10 @@ class Restaurant extends ChangeNotifier{
       ],
     ),
   ];
+  // creating a user cart
+  List<CartItem> _cart = [];
 
+  String _deliveryAdress = '';
   /*
   GETTERS
    */
@@ -308,13 +308,16 @@ class Restaurant extends ChangeNotifier{
   List<Food> get menu => _menu;
   // getter to receive the cart
   List<CartItem> get cart=> _cart;
+  String get deliveryAdress=> _deliveryAdress;
   /*
   OPERATIONS
    */
 
-  // creating a user cart
-  List<CartItem> _cart = [];
-
+  // update delivery adress
+  void updateDeliveryAdress(String newAdress){
+    _deliveryAdress = newAdress;
+    notifyListeners();
+  }
 
   // add to cart
   void addToCart(Food food,List<AddOn> selectedAddOns){
@@ -340,7 +343,6 @@ class Restaurant extends ChangeNotifier{
       notifyListeners();
   }
 
-
   // remove from cart
   void removeFromCart(CartItem cartItem){
     int cartIndex = _cart.indexOf(cartItem);
@@ -355,7 +357,6 @@ class Restaurant extends ChangeNotifier{
     }
   }
 
-
   // see total price of items in cart
   double getTotalPrice(){
     double total = 0.0;
@@ -369,7 +370,6 @@ class Restaurant extends ChangeNotifier{
     }
     return total;
   }
-
 
   // get total number of items in cart
   int getTotalItems(){
@@ -393,6 +393,7 @@ class Restaurant extends ChangeNotifier{
 
   // generate a receipt
 String displayCartReceipt(){
+
   final receipt = StringBuffer();
   receipt.writeln("Here's your receipt----->");
   receipt.writeln();
@@ -403,6 +404,7 @@ String formattedDate =  DateFormat.yMMMMd('en_US').format(DateTime.now());
 String formattedTime =  DateFormat.jm().format(DateTime.now());
   receipt.writeln('Date of Order : ' + formattedDate);
   receipt.writeln('Time Stamp of order : ' + formattedTime);
+  receipt.writeln('Delivering to : $deliveryAdress');
   // receipt.writeln('Mode of payment: ${isCod ? 'Cash on Delivery' : 'UPI'}');
   receipt.writeln('-----------------------------------------');
 

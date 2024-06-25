@@ -20,15 +20,19 @@ class LoginPage extends StatelessWidget {
     //login method
     //login method
     Future<void> signUserIn() async {
-      //show a loading circle
-      showDialog(context: context, builder: (context){
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      });
       final _authService = AuthService();
       try{
         await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
+
+        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            content: const Center(
+              child: Text(
+                "Logged - In Successfully",
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ))));
+
 
         // transfer to home page if login done
         Navigator.push(context,MaterialPageRoute(builder: ((context) => const HomePage())));

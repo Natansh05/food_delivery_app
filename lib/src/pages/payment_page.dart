@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_textfield.dart';
 import 'package:myapp/src/pages/delivery_page.dart';
+import 'package:myapp/src/models/user_data.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
@@ -14,18 +16,10 @@ class PaymentPage extends StatefulWidget {
 class _PaymentPageState extends State<PaymentPage> {
   bool isDelivery = true;
   bool isCod = true;
- // String _name = "";
- // String _phone = "";
   final TextEditingController name = TextEditingController();
   final TextEditingController phone = TextEditingController();
 
-  // final ValueNotifier<bool> _showError = ValueNotifier<bool>(true);
   bool showError = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -33,13 +27,6 @@ class _PaymentPageState extends State<PaymentPage> {
     phone.dispose();
     super.dispose();
   }
-
-  // void _validateInputs() {
-  //   setState(() {
-  //     _showError.value = _name.text.isEmpty || _phone.text.isEmpty;
-  //   });
-  // }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +41,7 @@ class _PaymentPageState extends State<PaymentPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 30.0,
-              ),
+              const SizedBox(height: 30.0),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -69,9 +54,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 25.0,
-              ),
+              const SizedBox(height: 25.0),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -130,9 +113,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
+                  const SizedBox(width: 20.0),
                   Expanded(
                     child: ListTile(
                       title: const Text('Pickup'),
@@ -179,9 +160,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
+                  const SizedBox(width: 20.0),
                   Expanded(
                     child: ListTile(
                       title: const Text('UPI'),
@@ -213,19 +192,47 @@ class _PaymentPageState extends State<PaymentPage> {
                   padding: const EdgeInsets.all(10.0),
                   child: MyButton(
                     text: 'Confirm the Order?',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DeliveryPage(),
-                      ),
-                    ),
+                    onTap: () {
+                      if (name.text.isEmpty || phone.text.isEmpty) {
+                        setState(() {
+                          showError = true;
+                        });
+                      } else {
+                        context.read<UserData>().setUserName(name.text);
+                        context.read<UserData>().setPhoneNum(phone.text);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DeliveryPage(),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 )
               else
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: MyButton(
-                    onTap: () {},
+                    onTap: () {
+                      if (name.text.isEmpty || phone.text.isEmpty) {
+                        setState(() {
+                          showError = true;
+                        });
+                      } else {
+                        context.read<UserData>().setUserName(name.text);
+                        context.read<UserData>().setPhoneNum(phone.text);
+                        context.read<UserData>().setDelivery(isDelivery);
+                        context.read<UserData>().setCod(isCod);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DeliveryPage(),
+                          ),
+                        );
+                      }
+                    },
                     text: 'UPI KA OPTION',
                   ),
                 ),
@@ -236,3 +243,4 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 }
+

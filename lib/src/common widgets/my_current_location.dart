@@ -1,27 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/src/models/restaurants.dart';
+import 'package:provider/provider.dart';
 
-class MyCurrentLocation extends StatelessWidget {
+class MyCurrentLocation extends StatefulWidget {
   const MyCurrentLocation({super.key});
 
+  @override
+  State<MyCurrentLocation> createState() => _MyCurrentLocationState();
+}
+
+class _MyCurrentLocationState extends State<MyCurrentLocation> {
+  final TextEditingController textEditingController  = TextEditingController();
   void openLocationSearchBox(BuildContext context){
     showDialog(context: context,
         builder: (context)=> AlertDialog(
           title: Text("Your location"),
-          content: const TextField(
+          content: TextField(
+            controller: textEditingController,
             decoration: InputDecoration(
-              hintText: "Your Address...",
+              hintText: "Enter your adress...",
             ),
           ),
           actions: [
             // cancel button
-            MaterialButton(onPressed: ()=> Navigator.pop(context),
+            MaterialButton(onPressed: () {
+                  textEditingController.clear();
+                  Navigator.pop(context);
+            },
               child: const Text(" CANCEL "),
             ),
 
 
             // save button
             MaterialButton(
-              onPressed: ()=> Navigator.pop(context),
+              onPressed: () {
+                String newAdress = textEditingController.text;
+                context.read<Restaurant>().updateDeliveryAdress(newAdress);
+                Navigator.pop(context);
+                textEditingController.clear();
+              },
               child: const Text(" SAVE "),
             )
 
@@ -44,13 +61,14 @@ class MyCurrentLocation extends StatelessWidget {
             onTap: ()=> openLocationSearchBox(context),
             child: Row(
               children: [
-                // current adress
-                Text(" A - 603 , Tulsi Parkview",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),),
 
+                Consumer<Restaurant>(builder: (context,restaurant,child)=>
+                    Text(restaurant.deliveryAdress,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),),
+                ),
                 // drop down meny
                 const Icon(Icons.arrow_drop_down_sharp),
 
