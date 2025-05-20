@@ -17,9 +17,9 @@ class LoginPage extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     Future<void> signUserIn() async {
-      final _authService = AuthService();
+      final authService = AuthService();
       try{
-        await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
+        await authService.signInWithEmailPassword(emailController.text, passwordController.text);
 
         ScaffoldMessenger.of(context).showSnackBar((SnackBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -36,7 +36,7 @@ class LoginPage extends StatelessWidget {
       }
       catch (e){
         showDialog(context: context, builder: (context)=> AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           title: Text(e.toString()),
         ));
       }
@@ -49,7 +49,7 @@ class LoginPage extends StatelessWidget {
 
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(

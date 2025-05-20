@@ -39,7 +39,7 @@ class MyCartTile extends StatelessWidget {
                       Text(cartItem.food.name),
 
                       // food price
-                      Text('\ ₹' + (cartItem.food.price).toString(),
+                      Text(' ₹${cartItem.food.price}',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -90,7 +90,7 @@ class MyCartTile extends StatelessWidget {
 
 
                           // add on price
-                          Text(' (\₹${addOn.price.toString()})'),
+                          Text(' (₹${addOn.price.toString()})'),
                         ],
 
                       ),
@@ -101,7 +101,7 @@ class MyCartTile extends StatelessWidget {
                       ),
                       onSelected: (value){
                       },
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                   ),
 
                 ),

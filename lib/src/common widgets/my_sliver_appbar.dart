@@ -24,7 +24,7 @@ class MySliverAppBar extends StatelessWidget {
              Navigator.push(context, MaterialPageRoute(builder: (context)=>const CartPage(),),);
            }, icon: const Icon(Icons.shopping_cart))
          ],
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         foregroundColor: Theme.of(context).colorScheme.primary,
         title: Text(
           "FLAVOR FLEET",

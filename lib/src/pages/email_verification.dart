@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
@@ -9,11 +7,11 @@ class EmailVerificationPage extends StatefulWidget {
   final String email;
   final VoidCallback onClose;
 
-    EmailVerificationPage({
-    Key? key,
+    const EmailVerificationPage({
+    super.key,
     required this.email,
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   State<EmailVerificationPage> createState() => _EmailVerificationPageState();
@@ -27,24 +25,6 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     return _authService.getCurrentUser()!.emailVerified;
   }
 
-  void emailVerificationNotification() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 1,
-          channelKey: 'orders_channel',
-          title: 'Email Verification',
-          body: 'Your email has been verified successfully!',
-          notificationLayout: NotificationLayout.Default,
-        ),
-      ).then((_) {
-        print("Notification created successfully");
-      }).catchError((error) {
-        print("Error creating notification: $error");
-      });
-    });
-  }
-
 
   @override
   void initState(){
@@ -53,7 +33,6 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       if (await userVerified()) {
         _timer.cancel();
         widget.onClose();
-        emailVerificationNotification();
       }
     });
   }
@@ -63,7 +42,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     User? user = _authService.getCurrentUser();
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -123,13 +102,13 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   );
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
+                  backgroundColor: WidgetStateProperty.all<Color>(
                     Theme.of(context).colorScheme.primary,
                   ),
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                     EdgeInsets.symmetric(vertical: 14.0, horizontal: 24.0),
                   ),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                  shape: WidgetStateProperty.all<OutlinedBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -148,7 +127,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               TextButton(
                 onPressed: widget.onClose,
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                  padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                     EdgeInsets.all(16.0),
                   ),
                 ),

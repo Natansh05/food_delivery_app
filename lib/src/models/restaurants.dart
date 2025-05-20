@@ -300,7 +300,7 @@ class Restaurant extends ChangeNotifier{
     ),
   ];
   // creating a user cart
-  List<CartItem> _cart = [];
+  final List<CartItem> _cart = [];
 
   String _deliveryAdress = 'nigga';
   /*
@@ -426,8 +426,8 @@ String displayCartReceipt(){
 
 String formattedDate =  DateFormat.yMMMMd('en_US').format(DateTime.now());
 String formattedTime =  DateFormat.jm().format(DateTime.now());
-  receipt.writeln('Date of Order : ' + formattedDate);
-  receipt.writeln('Time Stamp of order : ' + formattedTime);
+  receipt.writeln('Date of Order : $formattedDate');
+  receipt.writeln('Time Stamp of order : $formattedTime');
   receipt.writeln('Delivering to : $deliveryAdress');
   // receipt.writeln('Mode of payment: ${isCod ? 'Cash on Delivery' : 'UPI'}');
   receipt.writeln('-----------------------------------------');
@@ -451,7 +451,7 @@ String formattedTime =  DateFormat.jm().format(DateTime.now());
 
   // format double value into money
   String _formatPrice(double price){
-    return '₹ ' + '${price.toStringAsFixed(2)}';
+    return '₹ ${price.toStringAsFixed(2)}';
   }
 
   // format list of addons into string summary 

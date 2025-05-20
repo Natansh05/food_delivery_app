@@ -12,8 +12,8 @@ class RegisterPage extends StatefulWidget {
 
   const RegisterPage({
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -50,12 +50,12 @@ class _RegisterPageState extends State<RegisterPage> {
     final name = nameController.text;
     final phoneNumber = phoneNumberController.text;
 
-    final _authService = AuthService();
+    final authService = AuthService();
     if (passwordController.text == confirmPasswordController.text) {
       try {
-        await _authService.signUpWithEmailPassword(
+        await authService.signUpWithEmailPassword(
             emailController.text, passwordController.text);
-        User? user = _authService.getCurrentUser();
+        User? user = authService.getCurrentUser();
         await user?.updateDisplayName(name);
         addUser(user, email, password, name, phoneNumber);
 
@@ -78,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             title: Text(e.toString()),
           ),
         );
@@ -87,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           title: const Text("Passwords don't match"),
         ),
       );
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Stack(
           children: [

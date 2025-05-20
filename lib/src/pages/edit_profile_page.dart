@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,7 @@ class EditProfilePage extends StatefulWidget {
   final String Adress;
   final String name;
 
-  EditProfilePage({
+  const EditProfilePage({super.key, 
     required this.phone,
     required this.Adress,
     required this.name,
@@ -85,7 +84,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
           'E D I T  P R O F I L E',
@@ -94,7 +93,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -161,12 +160,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               userAdress = addressController.text;
               userName = nameController.text;
               updateUserData(user, userEmail, userAdress, userName, userPhone);
-              createUpdateNotification();
               // Implement update logic here
               // Example: updateUserProfile(nameController.text, emailController.text, phoneController.text, addressController.text);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               foregroundColor: Theme.of(context).colorScheme.primary,
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               textStyle: TextStyle(fontSize: 16),
@@ -211,22 +209,4 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-}
-
-void createUpdateNotification() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: 1,
-        channelKey: 'orders_channel',
-        title: 'User Profile Successfully :)',
-        body: 'Your profile has been updated !!',
-        notificationLayout: NotificationLayout.Default,
-      ),
-    ).then((_) {
-      print("Notification created successfully");
-    }).catchError((error) {
-      print("Error creating notification: $error");
-    });
-  });
 }

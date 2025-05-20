@@ -4,7 +4,7 @@ import '../models/order_item.dart'; // Import the UserOrder model
 class OrderDetailPage extends StatelessWidget {
   final UserOrder order;
 
-  OrderDetailPage({required this.order});
+  const OrderDetailPage({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +21,14 @@ class OrderDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDetailRow('Order ID', '${order.id}', theme),
-                _buildDetailRow('Date', '${order.date}', theme),
+                _buildDetailRow('Order ID', order.id, theme),
+                _buildDetailRow('Date', order.date, theme),
                 _buildDetailRow('Total Cost', '₹${order.totalCost.toStringAsFixed(2)}', theme),
-                _buildDetailRow('Payment Mode', '${order.paymentMode}', theme),
-                _buildDetailRow('Time of Order', '${order.time}', theme),
-                _buildDetailRow('Notes Left', '${order.note}', theme),
+                _buildDetailRow('Payment Mode', order.paymentMode, theme),
+                _buildDetailRow('Time of Order', order.time, theme),
+                _buildDetailRow('Notes Left', order.note, theme),
                 _buildDetailRow('Total No. of Items', '${order.items}', theme),
-                _buildDetailRow('Delivery Type', '${order.deliveryType}', theme),
+                _buildDetailRow('Delivery Type', order.deliveryType, theme),
                 SizedBox(height: 20),
                 _buildSectionTitle('Receipt', theme),
                 SizedBox(height: 10),
@@ -54,7 +54,7 @@ class OrderDetailPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -64,7 +64,7 @@ class OrderDetailPage extends StatelessWidget {
               value,
               style: TextStyle(
                 fontSize: 16,
-                color: theme.colorScheme.onBackground,
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ),
@@ -79,7 +79,7 @@ class OrderDetailPage extends StatelessWidget {
       style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: theme.colorScheme.onBackground,
+        color: theme.colorScheme.onSurface,
       ),
     );
   }
@@ -95,7 +95,7 @@ class OrderDetailPage extends StatelessWidget {
         receipt,
         style: TextStyle(
           fontSize: 14,
-          color: theme.colorScheme.onBackground,
+          color: theme.colorScheme.onSurface,
         ),
       ),
     );

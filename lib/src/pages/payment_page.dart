@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/src/models/gpay.dart';
 import 'package:provider/provider.dart';
@@ -22,23 +21,6 @@ class _PaymentPageState extends State<PaymentPage> {
 
   bool showError = false;
 
-  void createOrderNotification() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          id: 1,
-          channelKey: 'orders_channel',
-          title: 'Order Placed Successfully :)',
-          body: 'Your order has been placed successfully!',
-          notificationLayout: NotificationLayout.Default,
-        ),
-      ).then((_) {
-        print("Notification created successfully");
-      }).catchError((error) {
-        print("Error creating notification: $error");
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -240,7 +222,6 @@ class _PaymentPageState extends State<PaymentPage> {
                             builder: (context) => const DeliveryPage(),
                           ),
                         );
-                        createOrderNotification();
                       }
                     },
                   ),

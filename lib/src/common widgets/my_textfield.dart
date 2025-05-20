@@ -7,12 +7,12 @@ class MyTextField extends StatefulWidget {
   final bool obscureText;
 
   const MyTextField({
-    Key? key,
+    super.key,
     required this.check,
     required this.controller,
     required this.hintText,
     required this.obscureText,
-  }) : super(key: key);
+  });
 
   @override
   _MyTextFieldState createState() => _MyTextFieldState();
@@ -64,7 +64,7 @@ class _MyTextFieldState extends State<MyTextField> {
               color: Colors.grey.shade400,
             ),
           ),
-          fillColor: Theme.of(context).colorScheme.background,
+          fillColor: Theme.of(context).colorScheme.surface,
           filled: true,
           hintText: widget.hintText,
           hintStyle: TextStyle(

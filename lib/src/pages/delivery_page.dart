@@ -68,7 +68,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onBackground,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -78,14 +78,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
               _buildInfoRow('Payment Mode:', mode, theme),
               _buildInfoRow('Delivery Type:', delivery, theme),
               _buildInfoRow('Total Items:', items.toString(), theme),
-              _buildInfoRow('Total Cost:', '\₹${totalCost.toStringAsFixed(2)}', theme),
+              _buildInfoRow('Total Cost:', '₹${totalCost.toStringAsFixed(2)}', theme),
               SizedBox(height: 20),
               Text(
                 'Receipt:',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onBackground,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               SizedBox(height: 10),
@@ -107,7 +107,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
             label,
             style: TextStyle(
               fontSize: 16,
-              color: theme.colorScheme.onBackground,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           Text(
@@ -115,7 +115,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onBackground,
+              color: theme.colorScheme.onSurface,
             ),
           ),
         ],

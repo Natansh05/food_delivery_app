@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
@@ -56,8 +54,8 @@ class _FoodPageState extends State<FoodPage> {
               children: [
                 // food image
                 ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset(widget.food.imagePath),
-                  borderRadius: BorderRadius.circular(20.0),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +68,7 @@ class _FoodPageState extends State<FoodPage> {
                     ),
             
                     // food price
-                    Text('\₹'+" "+ (widget.food.price).toString(),
+                    Text('₹'" "+ (widget.food.price).toString(),
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Theme.of(context).colorScheme.primary,
@@ -127,7 +125,7 @@ class _FoodPageState extends State<FoodPage> {
                             AddOn addon = widget.food.availableAddOn[index];
                             return CheckboxListTile(
                                 title: Text(addon.name),
-                                subtitle: Text('\₹'+" "+(addon.price).toString()),
+                                subtitle: Text('₹'" "+(addon.price).toString()),
                                 value: widget.selectedAddons[addon],
                                 onChanged: (value){
                                   setState(() {

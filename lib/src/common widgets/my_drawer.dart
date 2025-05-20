@@ -4,7 +4,6 @@ import 'package:myapp/Services/auth/login_or_register.dart';
 import 'package:myapp/src/common%20widgets/my_drawer_tile.dart';
 
 import '../pages/past_orders.dart';
-import '../pages/edit_profile_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/settings_page.dart';
 
@@ -18,20 +17,20 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Future<void> signOut() async{
-      final _authService = AuthService();
+      final authService = AuthService();
       try{
-        await _authService.signOut(context);
+        await authService.signOut(context);
         Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginOrRegister()));
       }
       catch (e){
         showDialog(context: context, builder: (context)=>AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           title: Text(e.toString()),
         ));
       }
     }
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
         
         children: [

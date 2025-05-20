@@ -6,6 +6,8 @@ import '../models/order_item.dart'; // Assuming you have an Order model
 import 'order_details.dart'; // Import the detailed page
 
 class PastOrdersPage extends StatefulWidget {
+  const PastOrdersPage({super.key});
+
   @override
   State<PastOrdersPage> createState() => _PastOrdersPageState();
 }
@@ -21,7 +23,7 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
       appBar: AppBar(
         title: Text('O R D E R  H I S T O R Y'),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getOrderStream(
