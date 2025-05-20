@@ -1,5 +1,6 @@
-
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/src/models/gpay.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_textfield.dart';
@@ -20,6 +21,24 @@ class _PaymentPageState extends State<PaymentPage> {
   final TextEditingController phone = TextEditingController();
 
   bool showError = false;
+
+  void createOrderNotification() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 1,
+          channelKey: 'orders_channel',
+          title: 'Order Placed Successfully :)',
+          body: 'Your order has been placed successfully!',
+          notificationLayout: NotificationLayout.Default,
+        ),
+      ).then((_) {
+        print("Notification created successfully");
+      }).catchError((error) {
+        print("Error creating notification: $error");
+      });
+    });
+  }
 
   @override
   void dispose() {
@@ -71,16 +90,28 @@ class _PaymentPageState extends State<PaymentPage> {
               const SizedBox(height: 15.0),
               MyTextField(
                 controller: name,
-                hintText: 'Name*',
+                hintText: 'Notes*',
                 obscureText: false,
                 check: false,
               ),
               const SizedBox(height: 25.0),
-              MyTextField(
-                controller: phone,
-                hintText: 'Phone*',
-                obscureText: false,
-                check: true,
+              FutureBuilder<void>(
+                future: context.read<UserData>().updatePhoneNum(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    phone.text = context.read<UserData>().phoneNum;
+                    return MyTextField(
+                      controller: phone,
+                      hintText: 'Phone*',
+                      obscureText: false,
+                      check: true,
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 25.0),
               const Row(
@@ -191,13 +222,16 @@ class _PaymentPageState extends State<PaymentPage> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: MyButton(
-                    text: 'Confirm the Order?',
+                    text: 'Confirm the Order ?',
                     onTap: () {
                       if (name.text.isEmpty || phone.text.isEmpty) {
                         setState(() {
                           showError = true;
                         });
                       } else {
+                        setState(() {
+                          showError = false;
+                        });
                         context.read<UserData>().setUserName(name.text);
                         context.read<UserData>().setPhoneNum(phone.text);
                         Navigator.push(
@@ -206,35 +240,41 @@ class _PaymentPageState extends State<PaymentPage> {
                             builder: (context) => const DeliveryPage(),
                           ),
                         );
+                        createOrderNotification();
                       }
                     },
                   ),
                 )
               else
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: MyButton(
-                    onTap: () {
-                      if (name.text.isEmpty || phone.text.isEmpty) {
-                        setState(() {
-                          showError = true;
-                        });
-                      } else {
-                        context.read<UserData>().setUserName(name.text);
-                        context.read<UserData>().setPhoneNum(phone.text);
-                        context.read<UserData>().setDelivery(isDelivery);
-                        context.read<UserData>().setCod(isCod);
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DeliveryPage(),
-                          ),
-                        );
-                      }
-                    },
-                    text: 'UPI KA OPTION',
-                  ),
+                const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  // child: MyButton(
+                  //   onTap: () {
+                  //     if (name.text.isEmpty || phone.text.isEmpty) {
+                  //       setState(() {
+                  //         showError = true;
+                  //       });
+                  //     } else {
+                  //       setState(() {
+                  //         showError = false;
+                  //       });
+                  //       context.read<UserData>().setUserName(name.text);
+                  //       context.read<UserData>().setPhoneNum(phone.text);
+                  //       context.read<UserData>().setDelivery(isDelivery);
+                  //       context.read<UserData>().setCod(isCod);
+                  //
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const DeliveryPage(),
+                  //         ),
+                  //       );
+                  //       createOrderNotification();
+                  //     }
+                  //   },
+                  //   text: 'UPI KA OPTION',
+                  // ),
+                  child: UPI_Pay(),
                 ),
             ],
           ),
@@ -243,4 +283,3 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 }
-

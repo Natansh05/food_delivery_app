@@ -26,7 +26,15 @@ class MySliverAppBar extends StatelessWidget {
          ],
         backgroundColor: Theme.of(context).colorScheme.background,
         foregroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text("Sunset Dinner"),
+        title: Text(
+          "FLAVOR FLEET",
+          style: TextStyle(
+            // fontSize: 24.0, // Adjust the font size as needed
+            fontWeight: FontWeight.bold, // Use a bold font weight for emphasis
+            letterSpacing: 1.2, // Add some letter spacing for clarity
+            color: Theme.of(context).colorScheme.primary, // Set the text color to stand out on the app bar
+          ),
+        ),
         centerTitle: true,
         flexibleSpace: FlexibleSpaceBar(
           background: Padding(

@@ -2,7 +2,7 @@
     package="com.example.yourapp">
 
     <application
-        android:label="food-delivery app"
+        android:label="FlavorFleet"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
@@ -28,4 +28,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 </manifest>

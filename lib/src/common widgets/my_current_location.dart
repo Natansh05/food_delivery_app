@@ -61,7 +61,6 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
             onTap: ()=> openLocationSearchBox(context),
             child: Row(
               children: [
-
                 Consumer<Restaurant>(builder: (context,restaurant,child)=>
                     Text(restaurant.deliveryAdress,
                   style: TextStyle(

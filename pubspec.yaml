@@ -42,6 +42,10 @@ dependencies:
   firebase_auth: ^5.0.0
   cloud_firestore: ^5.0.0
   random_string: ^2.3.1
+  awesome_notifications_core: ^0.9.0 # <~ always ensure to use the latest version
+  awesome_notifications: any # <~ this version is managed by awesome_notifications_core package
+  pay: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -72,7 +76,7 @@ flutter:
      - lib/assets/paneer/
      - lib/assets/salads/
      - lib/assets/bread/
-     - lib/assets/profile_picture.png
+     - lib/assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

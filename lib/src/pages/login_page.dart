@@ -16,9 +16,6 @@ class LoginPage extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-
-    //login method
-    //login method
     Future<void> signUserIn() async {
       final _authService = AuthService();
       try{

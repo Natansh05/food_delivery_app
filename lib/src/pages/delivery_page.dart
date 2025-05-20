@@ -8,13 +8,15 @@ import '../models/user_data.dart';
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});
 
+
+
   @override
   State<DeliveryPage> createState() => _DeliveryPageState();
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
   FirestoreService db = FirestoreService();
-
+  bool order_saved = false;
   @override
   void initState() {
     super.initState();
@@ -25,15 +27,20 @@ class _DeliveryPageState extends State<DeliveryPage> {
     final userData = context.watch<UserData>();
     final restaurant = context.watch<Restaurant>();
 
-    double totalCost = restaurant.getTotalPrice();
-    int items = restaurant.getTotalItems();
-    String userName = userData.userName;
-    String userPhone = userData.phoneNum;
-    String mode = userData.cash ? "Cash" : "UPI";
-    String delivery = userData.delivery ? "Order to be delivered" : "Pickup Order";
-    String receipt = context.read<Restaurant>().displayCartReceipt();
-    db.saveOrderToDatabase(receipt, userName, userPhone, totalCost, items, mode, delivery);
 
+      double totalCost = restaurant.getTotalPrice();
+      int items = restaurant.getTotalItems();
+      String userName = userData.userName;
+      String userPhone = userData.phoneNum;
+      String mode = userData.cash ? "Cash" : "UPI";
+      String delivery =
+          userData.delivery ? "Order to be delivered" : "Pickup Order";
+      String receipt = context.read<Restaurant>().displayCartReceipt();
+    if(order_saved == false) {
+      db.saveOrderToDatabase(
+          receipt, userName, userPhone, totalCost, items, mode, delivery);
+      order_saved = true;
+    }
     final theme = Theme.of(context);
 
     return Scaffold(

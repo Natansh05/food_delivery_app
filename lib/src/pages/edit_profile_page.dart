@@ -1,18 +1,34 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
+import 'package:myapp/Services/database/firestore.dart';
 
 class EditProfilePage extends StatefulWidget {
+  final String phone;
+  final String Adress;
+  final String name;
+
+  EditProfilePage({
+    required this.phone,
+    required this.Adress,
+    required this.name,
+});
+
+
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
+
 class _EditProfilePageState extends State<EditProfilePage> {
   final AuthService _authService = AuthService();
+  final FirestoreService db = FirestoreService();
   User? user;
   late String userEmail = "";
-  late String userPhone = "";
-  late String userAdress = "";
+  String userPhone = "";
+  String userAdress = "";
   late String userName = "";
   // Initial values for the profile fields
   final TextEditingController nameController = TextEditingController(text: "John Doe");
@@ -26,16 +42,45 @@ class _EditProfilePageState extends State<EditProfilePage> {
     user = _authService.getCurrentUser();
     if (user != null) { // Ensure user is not null before accessing properties
       userEmail = user!.email ?? 'No email available';
-      userPhone = user!.phoneNumber ?? 'No phone number available';
-      userName = user!.displayName ?? 'No name available';
+      userName = widget.name;
+      nameController.text = userName;
       emailController.text = userEmail; // Set email controller to user email
-      nameController.text = user!.displayName ?? 'No name given';
+      phoneController.text = widget.phone;
+      addressController.text = widget.Adress;
     } else {
       userEmail = 'No email available';
       userPhone = 'No phone number available';
       userName = 'No name available';
     }
   }
+
+  Future<void> fetchUserData() async {
+    if (user != null) {
+      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+      setState(() {
+        userName = userData['Name'] ?? 'No name available';
+        userPhone = userData['Phone'] ?? 'No phone number available';
+        userAdress = userData['Address'] ?? 'No address available';
+      });
+    }
+  }
+
+ Future<void> updateUserData(User? user, String email, String address, String name,
+     String phoneNumber) async{
+   final FirestoreService db = FirestoreService();
+   Map<String, dynamic> updateUserInfo = {
+     "Email": email,
+     "Name": name,
+     "Phone Number": phoneNumber,
+     "Id": user!.uid,
+     "Adress" : address,
+   };
+
+   db.updateUserDetails(updateUserInfo,user.uid);
+ }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +148,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
         children: [
           _buildTextField('Full Name', nameController, Icons.person),
           SizedBox(height: 10),
-          _buildTextField('E-Mail', emailController, Icons.email),
+          // _buildTextField('E-Mail', emailController, Icons.email),
           SizedBox(height: 10),
           _buildTextField('Phone No', phoneController, Icons.phone),
           SizedBox(height: 10),
           _buildTextField('Default Address', addressController, Icons.home),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              userEmail = emailController.text;
+              userPhone = phoneController.text;
+              userAdress = addressController.text;
+              userName = nameController.text;
+              updateUserData(user, userEmail, userAdress, userName, userPhone);
+              createUpdateNotification();
               // Implement update logic here
               // Example: updateUserProfile(nameController.text, emailController.text, phoneController.text, addressController.text);
             },
@@ -132,7 +183,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
           SizedBox(height: 20),
           TextButton(
             onPressed: () {
-              // Implement delete account logic here
             },
             style: TextButton.styleFrom(
               foregroundColor: Colors.red,
@@ -161,4 +211,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
+}
+
+void createUpdateNotification() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 1,
+        channelKey: 'orders_channel',
+        title: 'User Profile Successfully :)',
+        body: 'Your profile has been updated !!',
+        notificationLayout: NotificationLayout.Default,
+      ),
+    ).then((_) {
+      print("Notification created successfully");
+    }).catchError((error) {
+      print("Error creating notification: $error");
+    });
+  });
 }

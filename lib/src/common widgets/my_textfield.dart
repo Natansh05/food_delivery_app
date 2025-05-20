@@ -64,11 +64,11 @@ class _MyTextFieldState extends State<MyTextField> {
               color: Colors.grey.shade400,
             ),
           ),
-          fillColor: Colors.grey.shade200,
+          fillColor: Theme.of(context).colorScheme.background,
           filled: true,
           hintText: widget.hintText,
           hintStyle: TextStyle(
-            color: Colors.grey[500],
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
       ),

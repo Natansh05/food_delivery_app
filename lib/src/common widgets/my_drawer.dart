@@ -3,6 +3,8 @@ import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/Services/auth/login_or_register.dart';
 import 'package:myapp/src/common%20widgets/my_drawer_tile.dart';
 
+import '../pages/past_orders.dart';
+import '../pages/edit_profile_page.dart';
 import '../pages/profile_page.dart';
 import '../pages/settings_page.dart';
 
@@ -56,7 +58,6 @@ class MyDrawer extends StatelessWidget {
           // home list tile
           MyDrawerTile(text: 'H O M E', icon: Icons.home, 
               onTap: ()=> Navigator.pop(context),),
-          // settings list tile
 
           // profile list tile
           MyDrawerTile(text: 'P R O F I L E', icon: Icons.person,
@@ -64,6 +65,14 @@ class MyDrawer extends StatelessWidget {
             Navigator.pop(context);
             Navigator.push(context, MaterialPageRoute(builder: (context)=> ProfilePage()));
               }),
+
+          // Past Orders Tile
+          MyDrawerTile(text: 'O R D E R  H I S T O R Y', icon: Icons.calendar_month_outlined,
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> PastOrdersPage()));
+              }),
+
           MyDrawerTile(text: 'S E T T I N G S', icon: Icons.settings,
               onTap: (){
             Navigator.pop(context);

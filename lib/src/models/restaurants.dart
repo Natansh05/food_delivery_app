@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/src/models/cart_item.dart';
@@ -300,7 +302,7 @@ class Restaurant extends ChangeNotifier{
   // creating a user cart
   List<CartItem> _cart = [];
 
-  String _deliveryAdress = '';
+  String _deliveryAdress = 'nigga';
   /*
   GETTERS
    */
@@ -312,6 +314,29 @@ class Restaurant extends ChangeNotifier{
   /*
   OPERATIONS
    */
+  Restaurant() {
+    _initializeDeliveryAddress();
+  }
+
+  Future<void> _initializeDeliveryAddress() async {
+    try {
+      // Get the current user's ID
+      String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      if (uid.isNotEmpty) {
+        // Fetch the user's document from Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+        if (userDoc.exists) {
+          // Get the delivery address from the document
+          _deliveryAdress = userDoc['Adress'] ?? '';
+        }
+      }
+    } catch (e) {
+      print('Error fetching delivery address: $e');
+    }
+    notifyListeners();
+  }
 
   // update delivery adress
   void updateDeliveryAdress(String newAdress){
@@ -324,7 +349,6 @@ class Restaurant extends ChangeNotifier{
     CartItem? cartItem = _cart.firstWhereOrNull((item){
       // check if selected item is the same
       bool isSameFood = item.food==food;
-
       // check if selected addOns are same
       bool isSameAddons = ListEquality().equals(item.selectedAddOns, selectedAddOns);
       return isSameFood && isSameAddons;
@@ -351,7 +375,7 @@ class Restaurant extends ChangeNotifier{
         _cart[cartIndex].quantity--;
       }
       else{
-        _cart.remove(cartIndex);
+        _cart.remove(cartItem);
       }
       notifyListeners();
     }
