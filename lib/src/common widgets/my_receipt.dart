@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/models/restaurants.dart';
-import 'package:provider/provider.dart';
 
-class MyReceipt extends StatefulWidget {
-  const MyReceipt({super.key});
+class MyReceipt extends StatelessWidget {
+  final String receipt;
 
-  @override
-  State<MyReceipt> createState() => _MyReceiptState();
-}
+  const MyReceipt({
+    super.key,
+    required this.receipt,
+  });
 
-class _MyReceiptState extends State<MyReceipt> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 25.0,right: 25.0,bottom: 25.0,top: 25.0),
+      padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 25.0, top: 25.0),
       child: Center(
         child: Column(
           children: [
-            const Text('Thankyou for placing the order !'),
-            const SizedBox(
-              height: 25.0,
-            ),
+            const Text('Thank you for placing the order!'),
+            const SizedBox(height: 25.0),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -28,10 +24,8 @@ class _MyReceiptState extends State<MyReceipt> {
                 ),
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              padding: EdgeInsets.all(10.0),
-              child: Consumer<Restaurant>(
-                builder: (context,restuarant,child)=>Text(restuarant.displayCartReceipt()),
-              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Text(receipt),
             ),
           ],
         ),

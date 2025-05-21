@@ -1,48 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_current_location.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
 import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/pages/payment_page.dart';
+import 'package:myapp/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
 
 class CartPageFooter extends StatelessWidget {
-  
   CartPageFooter({super.key});
-  final TextEditingController textEditingController  = TextEditingController();
-  void openLocationSearchBox(BuildContext context){
-    showDialog(context: context,
-        builder: (context)=> AlertDialog(
-          title: Text("Update your delivery address"),
-          content: TextField(
-            controller: textEditingController,
-            decoration: InputDecoration(
-              hintText: "Enter your new address",
-            ),
-          ),
-          actions: [
-            // cancel button
-            MaterialButton(onPressed: () {
-                  textEditingController.clear();
-                  Navigator.pop(context);
-            },
-              child: const Text(" CANCEL "),
-            ),
+  final TextEditingController textEditingController = TextEditingController();
+  void openLocationSearchBox(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Update your delivery address"),
+              content: TextField(
+                controller: textEditingController,
+                decoration: InputDecoration(
+                  hintText: "Enter your new address",
+                ),
+              ),
+              actions: [
+                // cancel button
+                MaterialButton(
+                  onPressed: () {
+                    textEditingController.clear();
+                    Navigator.pop(context);
+                  },
+                  child: const Text(" CANCEL "),
+                ),
 
-
-            // save button
-            MaterialButton(
-              onPressed: () {
-                String newAdress = textEditingController.text;
-                context.read<Restaurant>().updateDeliveryAdress(newAdress);
-                Navigator.pop(context);
-                textEditingController.clear();
-              },
-              child: const Text(" SAVE "),
-            )
-
-
-          ],
-        )
-    );
+                // save button
+                MaterialButton(
+                  onPressed: () {
+                    String newAdress = textEditingController.text;
+                    context.read<Restaurant>().updateDeliveryAdress(newAdress);
+                    Navigator.pop(context);
+                    textEditingController.clear();
+                  },
+                  child: const Text(" SAVE "),
+                )
+              ],
+            ));
   }
 
   @override
@@ -63,7 +61,9 @@ class CartPageFooter extends StatelessWidget {
       ),
       child: Column(
         children: [
-          MyCurrentLocation(icon: Icon(Icons.home),),
+          MyCurrentLocation(
+            icon: Icon(Icons.home),
+          ),
           // Checkout Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -72,10 +72,22 @@ class CartPageFooter extends StatelessWidget {
               height: 44,
               child: ElevatedButton(
                 onPressed: () {
+                  // success snackbar
+                  SnackBar snackbar = successSnackBar(
+                    context,
+                    "Order placed successfully",
+                    true,
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const PaymentPage()));
+                          builder: (context) => const DeliveryPage(
+                                deliveryFee: 20.0,
+                                handlingFee: 4.0,
+                              )));
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

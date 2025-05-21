@@ -219,7 +219,8 @@ class _PaymentPageState extends State<PaymentPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const DeliveryPage(),
+                            builder: (context) => const 
+                            DeliveryPage(deliveryFee: 20.0, handlingFee: 20.0,),
                           ),
                         );
                       }
