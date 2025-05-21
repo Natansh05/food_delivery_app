@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:myapp/Services/database/firestore.dart';
 import 'package:myapp/src/common widgets/my_receipt.dart';
 import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import '../models/user_data.dart';
 
