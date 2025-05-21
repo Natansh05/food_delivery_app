@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/cart_page_footer.dart';
-import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_cart_tile.dart';
 import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/pages/payment_page.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {

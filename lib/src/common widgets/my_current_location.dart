@@ -4,8 +4,8 @@ import 'package:myapp/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatefulWidget {
-  Icon icon;
-  MyCurrentLocation({super.key, this.icon = const Icon(Icons.location_on)});
+  final Icon icon;
+  const MyCurrentLocation({super.key, this.icon = const Icon(Icons.location_on)});
 
   @override
   State<MyCurrentLocation> createState() => _MyCurrentLocationState();

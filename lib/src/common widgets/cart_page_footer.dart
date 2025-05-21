@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_current_location.dart';
 import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/payment_page.dart';
 import 'package:provider/provider.dart';
 
@@ -48,8 +47,6 @@ class CartPageFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final address = Provider.of<Restaurant>(context).deliveryAdress;
-    final userName = Provider.of<UserData>(context).userName;
     return Container(
       height: 130,
       width: double.infinity,
