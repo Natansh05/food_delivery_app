@@ -47,6 +47,7 @@ class UserData with ChangeNotifier {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (userDoc.exists) {
         _phoneNum = userDoc['Phone'] ?? '';
+        _userName = userDoc['Name'] ?? '';
         notifyListeners();
       }
     } catch (e) {

@@ -95,8 +95,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
 
                 //my current location
-                const MyCurrentLocation(),
-
+                MyCurrentLocation(icon: Icon(Icons.location_on),),
                 // description box
                 const MyDescriptionBox(),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/src/common%20widgets/cart_page_footer.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_cart_tile.dart';
 import 'package:myapp/src/models/restaurants.dart';
@@ -68,13 +69,13 @@ class CartPage extends StatelessWidget {
                     ),
                     // checkout button
                     if(userCart.isNotEmpty)
-                      MyButton(
-                          onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>const PaymentPage())),
-                          text: "Proceed to pay"),
-                      const SizedBox(
-                        height: 25.0,
-                      )
-
+                      // MyButton(
+                      //     onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=>const PaymentPage())),
+                      //     text: "Proceed to pay"),
+                      // const SizedBox(
+                      //   height: 25.0,
+                      // )
+                      CartPageFooter()
                   ],
                 ),
               ),
