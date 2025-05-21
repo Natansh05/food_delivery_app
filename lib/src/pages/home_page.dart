@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/src/common%20widgets/custom_cart_item.dart';
 import 'package:myapp/src/common%20widgets/my_current_location.dart';
 import 'package:myapp/src/common%20widgets/my_description_box.dart';
 import 'package:myapp/src/common%20widgets/my_drawer.dart';
@@ -76,11 +77,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
            MySliverAppBar(
             title: MyTabBar(tabController: _tabController,),
             actions: [
-              IconButton(
-                onPressed: (){
+              CartIconWithBadge(
+                onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const CartPage()));
                 },
-                icon: const Icon(Icons.shopping_cart),
+                // icon: const Icon(Icons.shopping_cart),
               ),
             ],
             child:  Column(
