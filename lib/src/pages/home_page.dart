@@ -7,6 +7,7 @@ import 'package:myapp/src/common%20widgets/my_sliver_appbar.dart';
 import 'package:myapp/src/common%20widgets/my_tab_bar.dart';
 import 'package:myapp/src/models/food.dart';
 import 'package:myapp/src/models/restaurants.dart';
+import 'package:myapp/src/pages/cart_page.dart';
 import 'package:myapp/src/pages/food_page.dart';
 import 'package:provider/provider.dart';
 
@@ -74,6 +75,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         headerSliverBuilder: (context,innerBoxIsScrolled)=>[
            MySliverAppBar(
             title: MyTabBar(tabController: _tabController,),
+            actions: [
+              IconButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const CartPage()));
+                },
+                icon: const Icon(Icons.shopping_cart),
+              ),
+            ],
             child:  Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -93,6 +102,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ],
             ),
           ),
+          
         ],
         body: Consumer<Restaurant>(
           builder : (context,restaurant,child)=> TabBarView(
