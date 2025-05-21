@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
 
 import '../models/food.dart';
 
@@ -23,9 +24,11 @@ class FoodPage extends StatefulWidget {
 
 class _FoodPageState extends State<FoodPage> {
 
-
   // method to add to cart
   void addToCart(Food food,Map<AddOn,bool> selectedAddOns){
+    // show snackbar
+    final snackbar = successSnackBar(context, "${food.name} added to cart",true);
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
     // if this method is triggered we will go back to the menu page
     Navigator.pop(context);
@@ -68,10 +71,10 @@ class _FoodPageState extends State<FoodPage> {
                     ),
             
                     // food price
-                    Text('₹'" "+ (widget.food.price).toString(),
+                    Text('₹ ${widget.food.price}',
                       style: TextStyle(
-                        fontSize: 15.0,
-                        color: Theme.of(context).colorScheme.primary,
+                      fontSize: 15.0,
+                      color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
             
@@ -125,7 +128,7 @@ class _FoodPageState extends State<FoodPage> {
                             AddOn addon = widget.food.availableAddOn[index];
                             return CheckboxListTile(
                                 title: Text(addon.name),
-                                subtitle: Text('₹'" "+(addon.price).toString()),
+                                subtitle: Text('₹ ${addon.price}'),
                                 value: widget.selectedAddons[addon],
                                 onChanged: (value){
                                   setState(() {
