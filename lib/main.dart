@@ -33,14 +33,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // Only after at least the action method is set, the notification events are delivered
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: LoginOrRegister(),
       home: const AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
 
