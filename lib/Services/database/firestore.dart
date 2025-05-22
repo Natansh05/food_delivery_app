@@ -18,8 +18,6 @@ class FirestoreService {
       'Time' : formattedTime,
       'Total Price' : totalCost,
       'No. of Items' : items,
-      'Mode of Payment' : mode,
-      'Delivery Status' : delivery,
       'User Email' : _authService.getCurrentUser()!.email.toString(),
       'Order' : receipt,
       'Id' : _authService.getCurrentUser()!.uid,
@@ -51,7 +49,6 @@ class FirestoreService {
 
 
 //   read from database
-
 Stream<QuerySnapshot> getOrderStream(String? userId){
     final orders = db.collection("Orders")
         .where("Id", isEqualTo: userId).snapshots();
