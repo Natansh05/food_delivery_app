@@ -6,12 +6,12 @@ import 'package:myapp/Services/database/firestore.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String phone;
-  final String Adress;
+  final String address;
   final String name;
 
   const EditProfilePage({super.key, 
     required this.phone,
-    required this.Adress,
+    required this.address,
     required this.name,
 });
 
@@ -27,7 +27,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   User? user;
   late String userEmail = "";
   String userPhone = "";
-  String userAdress = "";
+  String userAddress = "";
   late String userName = "";
   // Initial values for the profile fields
   final TextEditingController nameController = TextEditingController(text: "John Doe");
@@ -38,14 +38,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    user = _authService.getCurrentUser();
+    user = _authService.getCurrentUser() as User?;
     if (user != null) { // Ensure user is not null before accessing properties
       userEmail = user!.email ?? 'No email available';
       userName = widget.name;
       nameController.text = userName;
       emailController.text = userEmail; // Set email controller to user email
       phoneController.text = widget.phone;
-      addressController.text = widget.Adress;
+      addressController.text = widget.address;
     } else {
       userEmail = 'No email available';
       userPhone = 'No phone number available';
@@ -59,7 +59,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       setState(() {
         userName = userData['Name'] ?? 'No name available';
         userPhone = userData['Phone'] ?? 'No phone number available';
-        userAdress = userData['Address'] ?? 'No address available';
+        userAddress = userData['Address'] ?? 'No address available';
       });
     }
   }
@@ -157,9 +157,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             onPressed: () async {
               userEmail = emailController.text;
               userPhone = phoneController.text;
-              userAdress = addressController.text;
+              userAddress = addressController.text;
               userName = nameController.text;
-              updateUserData(user, userEmail, userAdress, userName, userPhone);
+              updateUserData(user, userEmail, userAddress, userName, userPhone);
               // Implement update logic here
               // Example: updateUserProfile(nameController.text, emailController.text, phoneController.text, addressController.text);
             },

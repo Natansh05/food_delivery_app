@@ -27,7 +27,7 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getOrderStream(
-            _authService.getCurrentUser()!.uid),
+            _authService.getCurrentUser()!.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/pages/edit_profile_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -23,13 +23,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<Map<String, dynamic>> fetchUserData() async {
     if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.id).get();
       return {
         'userName': userData['Name'] ?? 'No name available',
         'userEmail': user!.email ?? 'No email available',
         'userPhone': userData['Phone'] ?? 'No phone number available',
         'userAddress': userData['Adress'] ?? 'No address available',
-        'memberId': user!.uid
+        'memberId': user!.id
       };
     }
     return {
@@ -173,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfilePage(
                   phone: userPhone,
-                  Adress: userAddress,
+                  address: userAddress,
                   name: userName,
                 )));
               },

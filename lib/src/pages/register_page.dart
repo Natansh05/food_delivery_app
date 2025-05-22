@@ -1,17 +1,15 @@
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/Services/database/firestore.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_textfield.dart';
-import 'email_verification.dart';
+import 'package:myapp/src/common%20widgets/progress_indicator.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:myapp/src/pages/login_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
-  final void Function()? onTap;
-
   const RegisterPage({
-    required this.onTap,
     super.key,
   });
 
@@ -24,73 +22,96 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-  bool showEmailVerificationPage = false;
   String email = "";
 
   Future<void> addUser(User? user, String email, String password, String name,
       String phoneNumber) async {
-    final FirestoreService db = FirestoreService();
+    // final FirestoreService db = FirestoreService();
     Map<String, dynamic> addUserInfo = {
       "Password": password,
       "Email": email,
       "Name": name,
       "Phone Number": phoneNumber,
-      "Id": user!.uid,
-      "Adress" : "",
+      "Id": user!.id,
+      "Adress": "",
     };
 
-    db.addUserDetail(addUserInfo, user.uid);
+    // db.addUserDetail(addUserInfo, user.id);
   }
 
   Future<void> register() async {
-    final email = emailController.text;
-    final password = passwordController.text;
-    final name = nameController.text;
-    final phoneNumber = phoneNumberController.text;
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final name = nameController.text.trim();
+    final phoneNumber = phoneNumberController.text.trim();
+
+    if (password != confirmPasswordController.text.trim()) {
+      final snackbar = successSnackBar(
+          context, "Passwords do not match. Please try again.", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+
+    if (email.isEmpty ||
+        password.isEmpty ||
+        name.isEmpty ||
+        phoneNumber.isEmpty) {
+      final snackbar =
+          successSnackBar(context, "Please fill in all fields.", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+    if (password.length < 6) {
+      final snackbar = successSnackBar(
+          context, "Password must be at least 6 characters long.", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return;
+    }
+
+    // Show loading indicator
+    showLoadingDialog(context);
 
     final authService = AuthService();
-    if (passwordController.text == confirmPasswordController.text) {
-      try {
-        await authService.signUpWithEmailPassword(
-            emailController.text, passwordController.text);
-        User? user = authService.getCurrentUser();
-        await user?.updateDisplayName(name);
-        addUser(user, email, password, name, phoneNumber);
 
-        setState(() {
-          this.email = email;
-          showEmailVerificationPage = true;
-          user?.sendEmailVerification();
-        });
+    try {
+      // Sign up the user
+      final response =
+          await authService.signUpwithEmailPassword(email, password);
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          content: const Center(
-            child: Text(
-              "Registered Successfully. Please verify your email.",
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ),
-        ));
-      } catch (e) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            title: Text(e.toString()),
-          ),
-        );
+      if (response?.user == null) {
+        hideLoadingDialog(context);
+        final snackbar = successSnackBar(
+            context, "Registration failed. Please try again.", false);
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        return;
       }
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: const Text("Passwords don't match"),
+
+      // Show success and ask user to verify email
+      setState(() {
+        this.email = email;
+      });
+      hideLoadingDialog(context);
+      final snackbar = successSnackBar(
+        context,
+        "Welcome $name! Please verify your email and login.",
+        true,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginPage(),
         ),
       );
+    } catch (e) {
+      hideLoadingDialog(context);
+      final snackbar = successSnackBar(
+          context, "An error occurred. Please try again.", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      debugPrint('Error during registration: $e');
     }
   }
 
@@ -165,7 +186,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         TextButton(
-                          onPressed: widget.onTap,
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
+                              ),
+                            );
+                          },
                           child: const Text(
                             "Login Now !!",
                             style: TextStyle(
@@ -179,17 +207,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
             ),
-            if (showEmailVerificationPage)
-              Positioned.fill(
-                child: EmailVerificationPage(
-                  email: email,
-                  onClose: () {
-                    setState(() {
-                      showEmailVerificationPage = false;
-                    });
-                  },
-                ),
-              ),
           ],
         ),
       ),

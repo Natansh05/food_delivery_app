@@ -20,7 +20,7 @@ class FirestoreService {
       'No. of Items' : items,
       'User Email' : _authService.getCurrentUser()!.email.toString(),
       'Order' : receipt,
-      'Id' : _authService.getCurrentUser()!.uid,
+      'Id' : _authService.getCurrentUser()!.id,
     });
   }
 

@@ -1,7 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/Services/auth/login_or_register.dart';
 import 'package:myapp/src/common%20widgets/my_drawer_tile.dart';
+import 'package:myapp/src/pages/login_page.dart';
 
 import '../pages/past_orders.dart';
 import '../pages/profile_page.dart';
@@ -10,9 +12,6 @@ import '../pages/settings_page.dart';
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
-
-
-
   @override
   Widget build(BuildContext context) {
 
@@ -20,7 +19,7 @@ class MyDrawer extends StatelessWidget {
       final authService = AuthService();
       try{
         await authService.signOut(context);
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginOrRegister()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
       }
       catch (e){
         showDialog(context: context, builder: (context)=>AlertDialog(
