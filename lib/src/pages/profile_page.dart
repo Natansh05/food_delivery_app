@@ -156,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Theme.of(context).colorScheme.secondary),
               title: const Text('Edit'),
               onTap: () async{
-                Navigator.push(
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditProfilePage(
@@ -166,10 +166,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 );
-
-                setState(() {
-                  userDataFuture = fetchUserData();
-                });
+                if(result){
+                  setState(() {
+                    userDataFuture = fetchUserData();
+                  });
+                }
               },
             ),
           ],

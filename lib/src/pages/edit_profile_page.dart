@@ -49,7 +49,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Future<void> updateUserData(String address, String name, String phoneNumber) async {
+  Future<void> updateUserData(
+      String address, String name, String phoneNumber) async {
     final uid = user?.id;
 
     if (uid == null) return;
@@ -157,6 +158,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 phoneController.text.trim(),
               );
               hideLoadingDialog(context);
+              Navigator.pop(context, true);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.surface,
