@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
