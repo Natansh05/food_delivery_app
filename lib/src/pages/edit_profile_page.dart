@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/common%20widgets/progress_indicator.dart';
 import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:myapp/src/models/user_data.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -76,6 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         true,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      await Provider.of<UserData>(context,listen : false).initialize();
     }
   }
 

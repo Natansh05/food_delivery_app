@@ -8,6 +8,7 @@ import 'package:myapp/src/common%20widgets/my_sliver_appbar.dart';
 import 'package:myapp/src/common%20widgets/my_tab_bar.dart';
 import 'package:myapp/src/models/food.dart';
 import 'package:myapp/src/models/restaurants.dart';
+import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/cart_page.dart';
 import 'package:myapp/src/pages/food_page.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void initState(){
     super.initState();
     _tabController = TabController(length: FoodCategory.values.length , vsync: this );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<UserData>(context, listen: false).initialize();
+    });
   }
 
   @override

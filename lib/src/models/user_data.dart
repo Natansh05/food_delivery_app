@@ -13,41 +13,34 @@ class UserData with ChangeNotifier {
 
   UserData();
   Future<void> initialize() async {
-  final user = _authService.getCurrentUser();
-  if (user != null) {
-    uid = user.id;
+    final user = _authService.getCurrentUser();
+    if (user != null) {
+      uid = user.id;
 
-    // Step 1: Try metadata
-    _userName = user.userMetadata?['name'] ?? '';
-    _phoneNum = user.userMetadata?['phone'] ?? '';
-    _userAddress = user.userMetadata?['address'] ?? '';
+      final profileData = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', uid)
+          .single();
 
-    final profileData = await Supabase.instance.client
-        .from('profiles')
-        .select()
-        .eq('id', uid)
-        .single();
+      // Only overwrite if fields are missing
+      _userName = profileData['name'];
+      _phoneNum = profileData['phone'];
+      _userAddress = profileData['address'];
 
-    // Only overwrite if fields are missing
-    _userName = _userName.isEmpty ? (profileData['name'] ?? '') : _userName;
-    _phoneNum = _phoneNum.isEmpty ? (profileData['phone'] ?? '') : _phoneNum;
-    _userAddress =
-        _userAddress.isEmpty ? (profileData['address'] ?? '') : _userAddress;
-
-    // Step 3: Update metadata in Supabase
-    await Supabase.instance.client.auth.updateUser(UserAttributes(
-      data: {
-        'name': _userName,
-        'phone': _phoneNum,
-        'address': _userAddress,
-      },
-    ));
-    notifyListeners();
-  } else {
-    throw Exception('User is not logged in');
+      // Step 3: Update metadata in Supabase
+      await Supabase.instance.client.auth.updateUser(UserAttributes(
+        data: {
+          'name': _userName,
+          'phone': _phoneNum,
+          'address': _userAddress,
+        },
+      ));
+      notifyListeners();
+    } else {
+      throw Exception('User is not logged in');
+    }
   }
-}
-
 
   String get userName => _userName;
   String get phoneNum => _phoneNum;
