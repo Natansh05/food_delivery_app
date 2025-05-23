@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/pages/edit_profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,31 +13,32 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final AuthService _authService = AuthService();
   User? user;
-
+  late String userEmail = "";
+  late String userPhone = "";
+  late String userAddress = "";
+  late String userName = "";
+  late Future<void> userDataFuture;
   @override
   void initState() {
     super.initState();
     user = _authService.getCurrentUser();
+    userDataFuture = fetchUserData();
   }
 
-  Future<Map<String, dynamic>> fetchUserData() async {
+  Future<void> fetchUserData() async {
     if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.id).get();
-      return {
-        'userName': userData['Name'] ?? 'No name available',
-        'userEmail': user!.email ?? 'No email available',
-        'userPhone': userData['Phone'] ?? 'No phone number available',
-        'userAddress': userData['Adress'] ?? 'No address available',
-        'memberId': user!.id
-      };
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', user!.id)
+          .single();
+      setState(() {
+        userName = response['name'] ?? 'No name available';
+        userEmail = response['email'] ?? 'No email available';
+        userPhone = response['phone'] ?? 'No phone number available';
+        userAddress = response['address'] ?? 'No address available';
+      });
     }
-    return {
-      'userName': 'No name available',
-      'userEmail': 'No email available',
-      'userPhone': 'No phone number available',
-      'userAddress': 'No address available',
-      'memberId': 'No ID available'
-    };
   }
 
   @override
@@ -56,63 +56,54 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theme.of(context).colorScheme.surface,
       ),
       body: user != null
-          ? FutureBuilder<Map<String, dynamic>>(
-        future: fetchUserData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
+          ? FutureBuilder(
+              future: userDataFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
 
-          if (!snapshot.hasData) {
-            return Center(child: Text('No user data found'));
-          }
-
-          var userData = snapshot.data!;
-          String userName = userData['userName'];
-          String userEmail = userData['userEmail'];
-          String userPhone = userData['userPhone'];
-          String userAddress = userData['userAddress'];
-          String memberId = userData['memberId'];
-
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildProfileHeader(context, userName, userEmail),
-                SizedBox(height: 16),
-                _buildProfileOptions(context, userName, userEmail, userPhone, userAddress, memberId),
-              ],
-            ),
-          );
-        },
-      )
-          : Center(child: Text('User not logged in')),
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildProfileHeader(context, userName, userEmail),
+                      const SizedBox(height: 16),
+                      _buildProfileOptions(
+                        context,
+                        userName,
+                        userEmail,
+                        userPhone,
+                        userAddress,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            )
+          : const Center(child: Text('User not logged in')),
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context, String userName, String userEmail) {
+  Widget _buildProfileHeader(
+      BuildContext context, String userName, String userEmail) {
     return Column(
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 40,
               backgroundImage: AssetImage('lib/assets/profile_picture.png'),
-              onBackgroundImageError: (exception, stackTrace) {
-                print('Error loading image: $exception');
-              },
             ),
             Positioned(
               bottom: 0,
               right: 0,
               child: GestureDetector(
-                onTap: () {
-                  // Add functionality to change the profile picture
-                },
+                onTap: () {},
                 child: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   radius: 15,
@@ -126,11 +117,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-        SizedBox(height: 10),
-        Text(
-          userName,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
+        const SizedBox(height: 10),
+        Text(userName,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         Text(
           userEmail,
           style: TextStyle(
@@ -138,74 +127,64 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }
 
-  Widget _buildProfileOptions(BuildContext context, String userName, String userEmail, String userPhone, String userAddress, String memberId) {
+  Widget _buildProfileOptions(
+    BuildContext context,
+    String userName,
+    String userEmail,
+    String userPhone,
+    String userAddress,
+  ) {
     return Column(
       children: [
-        Divider(),
+        const Divider(),
         ExpansionTile(
-          leading: Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
-          title: Text('Personal Information'),
+          leading:
+              Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
+          title: const Text('Personal Information'),
           children: [
+            ListTile(title: const Text('Name'), subtitle: Text(userName)),
+            ListTile(title: const Text('Email'), subtitle: Text(userEmail)),
+            ListTile(title: const Text('Phone'), subtitle: Text(userPhone)),
+            ListTile(title: const Text('Address'), subtitle: Text(userAddress)),
             ListTile(
-              title: Text('Name'),
-              subtitle: Text(userName),
-            ),
-            ListTile(
-              title: Text('Email'),
-              subtitle: Text(userEmail),
-            ),
-            ListTile(
-              title: Text('Phone'),
-              subtitle: Text(userPhone),
-            ),
-            ListTile(
-              title: Text('Address'),
-              subtitle: Text(userAddress),
-            ),
-            ListTile(
-              trailing: Icon(Icons.edit, color: Theme.of(context).colorScheme.secondary),
-              title: Text('Edit'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfilePage(
-                  phone: userPhone,
-                  address: userAddress,
-                  name: userName,
-                )));
+              trailing: Icon(Icons.edit,
+                  color: Theme.of(context).colorScheme.secondary),
+              title: const Text('Edit'),
+              onTap: () async{
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(
+                      name: userName,
+                      phone: userPhone,
+                      address: userAddress,
+                    ),
+                  ),
+                );
+
+                setState(() {
+                  userDataFuture = fetchUserData();
+                });
               },
             ),
           ],
         ),
-        Divider(),
+        const Divider(),
         ExpansionTile(
-          leading: Icon(Icons.support_agent, color: Theme.of(context).colorScheme.primary),
-          title: Text('Customer Support'),
-          children: [
-            ListTile(
-              title: Text('Contact us at support@flavorfleet.com'),
-            ),
-            ListTile(
-              title: Text('Phone: +123456789'),
-            ),
+          leading: Icon(Icons.support_agent,
+              color: Theme.of(context).colorScheme.primary),
+          title: const Text('Customer Support'),
+          children: const [
+            ListTile(title: Text('Contact us at support@flavorfleet.com')),
+            ListTile(title: Text('Phone: +123456789')),
           ],
         ),
-        Divider(),
-        ListTile(
-          leading: Icon(Icons.badge, color: Theme.of(context).colorScheme.primary),
-          title: Text('Member ID'),
-          subtitle: Text(memberId),
-          trailing: IconButton(
-            icon: Icon(Icons.copy, color: Theme.of(context).colorScheme.secondary),
-            onPressed: () {
-              // Implement copy functionality
-            },
-          ),
-        ),
-        Divider(),
+        const Divider(),
       ],
     );
   }

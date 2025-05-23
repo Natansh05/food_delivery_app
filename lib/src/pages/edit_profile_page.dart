@@ -1,85 +1,82 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/Services/database/firestore.dart';
+import 'package:myapp/src/common%20widgets/progress_indicator.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String phone;
   final String address;
   final String name;
 
-  const EditProfilePage({super.key, 
+  const EditProfilePage({
+    super.key,
     required this.phone,
     required this.address,
     required this.name,
-});
-
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-
 class _EditProfilePageState extends State<EditProfilePage> {
-  final AuthService _authService = AuthService();
-  final FirestoreService db = FirestoreService();
-  User? user;
+  final AuthService authService = AuthService();
+  late final User? user;
   late String userEmail = "";
   String userPhone = "";
   String userAddress = "";
   late String userName = "";
-  // Initial values for the profile fields
-  final TextEditingController nameController = TextEditingController(text: "John Doe");
-  final TextEditingController emailController = TextEditingController(text: "john.doe@example.com");
-  final TextEditingController phoneController = TextEditingController(text: "Not Specified Yet");
-  final TextEditingController addressController = TextEditingController(text: "Not Specified Yet");
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    user = _authService.getCurrentUser() as User?;
-    if (user != null) { // Ensure user is not null before accessing properties
+    user = authService.getCurrentUser();
+    if (user != null) {
       userEmail = user!.email ?? 'No email available';
       userName = widget.name;
       nameController.text = userName;
-      emailController.text = userEmail; // Set email controller to user email
+      emailController.text = userEmail;
       phoneController.text = widget.phone;
       addressController.text = widget.address;
+    }
+  }
+
+  Future<void> updateUserData(String address, String name, String phoneNumber) async {
+    final uid = user?.id;
+
+    if (uid == null) return;
+    debugPrint("User ID: $uid");
+    final response = await Supabase.instance.client
+        .from('profiles')
+        .update({
+          'name': name,
+          'phone': phoneNumber,
+          'address': address,
+        })
+        .eq('id', uid)
+        .select();
+
+    if (response.isEmpty) {
+      final snackbar =
+          successSnackBar(context, "Profile Updation Failed", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
-      userEmail = 'No email available';
-      userPhone = 'No phone number available';
-      userName = 'No name available';
+      final snackbar = successSnackBar(
+        context,
+        "Profile Updated Successfully",
+        true,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }
-
-  Future<void> fetchUserData() async {
-    if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-      setState(() {
-        userName = userData['Name'] ?? 'No name available';
-        userPhone = userData['Phone'] ?? 'No phone number available';
-        userAddress = userData['Address'] ?? 'No address available';
-      });
-    }
-  }
-
- Future<void> updateUserData(User? user, String email, String address, String name,
-     String phoneNumber) async{
-   final FirestoreService db = FirestoreService();
-   Map<String, dynamic> updateUserInfo = {
-     "Email": email,
-     "Name": name,
-     "Phone Number": phoneNumber,
-     "Id": user!.uid,
-     "Adress" : address,
-   };
-
-   db.updateUserDetails(updateUserInfo,user.uid);
- }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +85,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       appBar: AppBar(
         title: Text(
           'E D I T  P R O F I L E',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -114,25 +109,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
         CircleAvatar(
           radius: 75,
           backgroundImage: AssetImage('lib/assets/profile_picture.png'),
-          onBackgroundImageError: (exception, stackTrace) {
-            print('Error loading image: $exception');
-          },
         ),
         Positioned(
           bottom: 0,
           right: 0,
           child: GestureDetector(
             onTap: () {
-              // Add functionality to change the profile picture
+              // Implement profile image change logic
             },
             child: CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.secondary,
               radius: 20,
-              child: Icon(
-                Icons.camera_alt,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 20,
-              ),
+              child: Icon(Icons.camera_alt,
+                  color: Theme.of(context).colorScheme.onPrimary, size: 20),
             ),
           ),
         ),
@@ -147,21 +136,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
         children: [
           _buildTextField('Full Name', nameController, Icons.person),
           SizedBox(height: 10),
-          // _buildTextField('E-Mail', emailController, Icons.email),
-          SizedBox(height: 10),
           _buildTextField('Phone No', phoneController, Icons.phone),
           SizedBox(height: 10),
           _buildTextField('Default Address', addressController, Icons.home),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
-              userEmail = emailController.text;
-              userPhone = phoneController.text;
-              userAddress = addressController.text;
-              userName = nameController.text;
-              updateUserData(user, userEmail, userAddress, userName, userPhone);
-              // Implement update logic here
-              // Example: updateUserProfile(nameController.text, emailController.text, phoneController.text, addressController.text);
+              if (nameController.text.isEmpty ||
+                  phoneController.text.isEmpty ||
+                  addressController.text.isEmpty) {
+                final snackbar = successSnackBar(
+                    context, "Please fill all the fields", false);
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                return;
+              }
+              showLoadingDialog(context);
+              await updateUserData(
+                addressController.text.trim(),
+                nameController.text.trim(),
+                phoneController.text.trim(),
+              );
+              hideLoadingDialog(context);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.surface,
@@ -173,7 +168,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
           SizedBox(height: 20),
           Text(
-            'Joined 31 October 2022',
+            'Joined on Supabase',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
             ),
@@ -181,10 +176,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           SizedBox(height: 20),
           TextButton(
             onPressed: () {
+              // Implement account deletion logic if needed
             },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
             child: Text('Delete'),
           ),
         ],
@@ -192,7 +186,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon) {
+  Widget _buildTextField(
+      String label, TextEditingController controller, IconData icon) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
