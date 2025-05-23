@@ -27,19 +27,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String email = "";
 
-  Future<void> addUser(User? user, String email, String password, String name,
-      String phoneNumber) async {
-    // final FirestoreService db = FirestoreService();
-    Map<String, dynamic> addUserInfo = {
-      "Password": password,
-      "Email": email,
-      "Name": name,
-      "Phone Number": phoneNumber,
-      "Id": user!.id,
-      "Adress": "",
-    };
+  Future<void> addUser(
+      User? user, String email, String name, String phoneNumber) async {
+    debugPrint("User ID: ${user!.id}");
 
-    // db.addUserDetail(addUserInfo, user.id);
+    await Supabase.instance.client.from('profiles').insert({
+      'id': user.id,
+      'name': name,
+      'phone': phoneNumber,
+      'email': email,
+    });
   }
 
   Future<void> register() async {
@@ -80,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
       // Sign up the user
       final response =
           await authService.signUpwithEmailPassword(email, password);
-
+      
       if (response?.user == null) {
         hideLoadingDialog(context);
         final snackbar = successSnackBar(
@@ -93,6 +90,12 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         this.email = email;
       });
+      await addUser(
+        response!.user,
+        email,
+        name,
+        phoneNumber,
+      );
       hideLoadingDialog(context);
       final snackbar = successSnackBar(
         context,

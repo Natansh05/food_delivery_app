@@ -1,27 +1,26 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
 import 'package:myapp/src/common%20widgets/my_textfield.dart';
 import 'package:myapp/src/common%20widgets/progress_indicator.dart';
 import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/pages/home_page.dart';
 import 'package:myapp/src/pages/register_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
     Future<void> signUserIn() async {
-      if (emailController.text.isEmpty ||
-          passwordController.text.isEmpty) {
-        final snackbar = successSnackBar(
-            context, "Please fill in all fields.", false);
+      if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+        final snackbar =
+            successSnackBar(context, "Please fill in all fields.", false);
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
@@ -33,9 +32,8 @@ class LoginPage extends StatelessWidget {
         passwordController.text.trim(),
       );
 
-      hideLoadingDialog(context);
-
       if (user == null) {
+        hideLoadingDialog(context);
         final snackbar =
             successSnackBar(context, error ?? "Login failed", false);
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
@@ -43,23 +41,28 @@ class LoginPage extends StatelessWidget {
       }
 
       if (user.emailConfirmedAt == null) {
+        hideLoadingDialog(context);
         final snackbar =
             successSnackBar(context, "Please verify your email.", false);
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
 
-      final snackbar = successSnackBar(
-        context,
-        "Welcome back ${user.userMetadata?['name'] ?? ''}",
-        true,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      hideLoadingDialog(context);
+      final profileres = await Supabase.instance.client
+        .from('profiles')
+        .select()
+        .eq('id', user.id)
+        .single();
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
-      );
+        final snackbar = successSnackBar(
+          context,
+          "Welcome back ${profileres['name']}",
+          true,
+        );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      
+
     }
 
     return Scaffold(
