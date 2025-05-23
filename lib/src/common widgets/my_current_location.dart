@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/models/restaurants.dart';
 import 'package:myapp/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +37,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
                 MaterialButton(
                   onPressed: () {
                     String newAdress = textEditingController.text;
-                    context.read<Restaurant>().updateDeliveryAdress(newAdress);
+                    context.read<UserData>().setUserAddress(newAdress);
                     Navigator.pop(context);
                     textEditingController.clear();
                   },
@@ -50,7 +49,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
 
   @override
   Widget build(BuildContext context) {
-    final address = Provider.of<Restaurant>(context).deliveryAdress;
+    final address = Provider.of<UserData>(context).userAddress;
     final userName = Provider.of<UserData>(context).userName;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
