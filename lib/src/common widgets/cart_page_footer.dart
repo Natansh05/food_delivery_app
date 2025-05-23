@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_current_location.dart';
 import 'package:myapp/src/common%20widgets/success_snackbar.dart';
 import 'package:myapp/src/models/restaurants.dart';
+import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,7 @@ class CartPageFooter extends StatelessWidget {
                 MaterialButton(
                   onPressed: () {
                     String newAdress = textEditingController.text;
+                    context.read<UserData>().setUserAddress(newAdress);
                     context.read<Restaurant>().updateDeliveryAdress(newAdress);
                     Navigator.pop(context);
                     textEditingController.clear();

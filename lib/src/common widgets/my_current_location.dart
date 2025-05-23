@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/src/models/restaurants.dart';
 import 'package:myapp/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +39,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
                   onPressed: () {
                     String newAdress = textEditingController.text;
                     context.read<UserData>().setUserAddress(newAdress);
+                    context.read<Restaurant>().updateDeliveryAdress(newAdress);
                     Navigator.pop(context);
                     textEditingController.clear();
                   },
