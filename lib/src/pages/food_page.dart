@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_button.dart';
+import 'package:myapp/src/common%20widgets/network_image_box.dart';
 import 'package:myapp/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import 'package:myapp/src/common%20widgets/success_snackbar.dart';
@@ -56,9 +57,10 @@ class _FoodPageState extends State<FoodPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // food image
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.network(widget.food.imagePath),
+                NetworkImageBox(
+                  imageUrl: widget.food.imagePath,
+                  height: 500.0,
+                  width: double.infinity,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
