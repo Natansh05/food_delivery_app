@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/database/firestore.dart';
+import 'package:myapp/Services/database/supabase.dart';
 import 'package:myapp/src/common widgets/my_receipt.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
 import 'package:myapp/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import '../models/user_data.dart';
@@ -22,7 +22,7 @@ class DeliveryPage extends StatefulWidget {
 }
 
 class _DeliveryPageState extends State<DeliveryPage> {
-  final FirestoreService db = FirestoreService();
+  final DatabaseService db = DatabaseService();
 
   late String _receipt;
   late String _userName;
@@ -42,7 +42,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
       final userData = context.read<UserData>();
       final restaurant = context.read<Restaurant>();
 
-      // Capture info BEFORE clearing
       double baseTotal = restaurant.getTotalPrice();
       double totalCost = baseTotal + widget.deliveryFee + widget.handlingFee;
       int items = restaurant.getTotalItems();
@@ -50,16 +49,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
       String userPhone = userData.phoneNum;
       String receipt = restaurant.displayCartReceipt();
 
-      // Save order to Firestore
-      db.saveOrderToDatabase(
-        receipt,
-        userName,
-        userPhone,
-        totalCost,
-        items,
-        "", // payment mode removed
-        "", // delivery type removed
-      );
+      // Save order to Supabase
+      db.placeOrder(context).then((_) {
+        final snackbar =
+            successSnackBar(context, "Your Order was received succesfully $userName", true);
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      }).catchError((error) {
+        final snackbar = successSnackBar(
+            context, "Failed to place order: $error", false);
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      });
 
       // Store info in state variables
       setState(() {
@@ -72,17 +71,6 @@ class _DeliveryPageState extends State<DeliveryPage> {
         _handlingFee = widget.handlingFee;
         _dataLoaded = true;
       });
-
-      // Clear the cart AFTER storing info
-      restaurant.clearCart();
-
-      // Optionally navigate after a delay
-      // Future.delayed(const Duration(seconds: 2), () {
-      //   Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (context) => HomePage()),
-      //     (route) => false,
-      //   );
-      // });
     });
   }
 
@@ -126,9 +114,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
             _buildInfoRow('Name:', _userName, theme),
             _buildInfoRow('Phone:', _userPhone, theme),
             _buildInfoRow('Total Items:', _items.toString(), theme),
-            _buildInfoRow('Delivery Fee:', '₹${_deliveryFee.toStringAsFixed(2)}', theme),
-            _buildInfoRow('Handling Fee:', '₹${_handlingFee.toStringAsFixed(2)}', theme),
-            _buildInfoRow('Total Cost:', '₹${_totalCost.toStringAsFixed(2)}', theme),
+            _buildInfoRow(
+                'Delivery Fee:', '₹${_deliveryFee.toStringAsFixed(2)}', theme),
+            _buildInfoRow(
+                'Handling Fee:', '₹${_handlingFee.toStringAsFixed(2)}', theme),
+            _buildInfoRow(
+                'Total Cost:', '₹${_totalCost.toStringAsFixed(2)}', theme),
             const SizedBox(height: 30),
             Align(
               alignment: Alignment.centerLeft,
@@ -144,10 +135,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
             const SizedBox(height: 10),
             Card(
               elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: MyReceipt(receipt: _receipt), // Pass receipt here if MyReceipt supports it
+                child: MyReceipt(
+                    receipt:
+                        _receipt), // Pass receipt here if MyReceipt supports it
               ),
             ),
           ],

@@ -41,7 +41,6 @@ class Restaurant extends ChangeNotifier {
           .select();
       _categories.clear();
       _categories.addAll(response.map((item) => Category.fromMap(item as Map<String, dynamic>)));
-      debugPrint('✅ Supabase response for category: $response');
     } catch (e) {
       debugPrint('Error fetching categories: $e');
     }
@@ -56,7 +55,6 @@ class Restaurant extends ChangeNotifier {
 
     _isLoading = true;
     notifyListeners();
-    debugPrint('✅ Supabase response: Fetching foods...');
     try {
       final List<dynamic> response = await Supabase.instance.client
       .from('foods')
@@ -65,10 +63,8 @@ class Restaurant extends ChangeNotifier {
         category:category_id (id, name),
         available_addons:addons (id, name, price)
       ''');
-      debugPrint('✅ Supabase response: ${response.length} foods fetched');
       _menu.clear();
       _menu.addAll(response.map((item) => Food.fromMap(item as Map<String, dynamic>)));
-      debugPrint('Fetched ${_menu.length} foods');
     } catch (e) {
       debugPrint('Error fetching foods: $e');
     }
@@ -96,6 +92,12 @@ class Restaurant extends ChangeNotifier {
     } else {
       _cart.add(CartItem(food: food, selectedAddOns: selectedAddOns));
     }
+    notifyListeners();
+  }
+
+  void updateCart(List<CartItem> newCart) {
+    _cart.clear();
+    _cart.addAll(newCart);
     notifyListeners();
   }
 

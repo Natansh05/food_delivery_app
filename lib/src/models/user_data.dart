@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../Services/auth/auth_service.dart';
 
 class UserData with ChangeNotifier {
