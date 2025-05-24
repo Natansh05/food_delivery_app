@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/database/firestore.dart';
 import 'package:myapp/src/common widgets/my_receipt.dart';
