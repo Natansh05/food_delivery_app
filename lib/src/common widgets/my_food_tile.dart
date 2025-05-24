@@ -54,7 +54,7 @@ class FoodTile extends StatelessWidget {
                   // food image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset(food.imagePath,height: 100,),
+                      child: Image.network(food.imagePath,height: 100,),
                   ),
                 ],
               ),

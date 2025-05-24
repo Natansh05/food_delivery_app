@@ -58,7 +58,7 @@ class _FoodPageState extends State<FoodPage> {
                 // food image
                 ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(widget.food.imagePath),
+                    child: Image.network(widget.food.imagePath),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
