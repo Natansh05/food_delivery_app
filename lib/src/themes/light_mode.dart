@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-ThemeData lightMode = ThemeData(
+final ThemeData lightMode = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.light,
+
   colorScheme: ColorScheme.light(
-    surface: Color(0xFFF5F5F5),// Primary Color (Blue)
-    primary:  Color(0xFF37474F),// Secondary Color (Blue Grey)
-    secondary: Color(0xFF607D8B), // Tertiary Color (Amber)
-    onPrimary: Color(0xFF212121), // Inverse Primary Color (White)
+    surface: Color(0xFFF5F5F5),
+    primary:  Color(0xFFD2D2D2),
+    secondary: Color.fromARGB(255, 125, 129, 131), 
+    onPrimary: Color(0xFF212121),
+    onSurface: Color.fromARGB(255, 70, 70, 70),
+    onSecondary: Colors.white,
+    onTertiary: Color(0xFF212121),
   ),
-    // 0xF0F0F1F1
+
 );
+

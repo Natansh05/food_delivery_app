@@ -16,10 +16,14 @@ class CartPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("C A R T"),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            title: Text("C A R T",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.5,
+                  color: Theme.of(context).colorScheme.onSurface,
+                )),
             centerTitle: true,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),
@@ -63,7 +67,7 @@ class CartPage extends StatelessWidget {
                     top: 10,
                   ),
                   children: [
-                    ...userCart.map((item) => MyCartTile(cartItem: item)).toList(),
+                    ...userCart.map((item) => MyCartTile(cartItem: item)),
                     const SizedBox(height: 10),
                     BillDetailsCard(
                       itemTotal: restaurant.getTotalPrice(),

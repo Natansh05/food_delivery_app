@@ -38,11 +38,12 @@ dependencies:
   provider: ^6.1.2
   collection: ^1.18.0
   intl: ^0.19.0
-  firebase_core: ^3.0.0
-  firebase_auth: ^5.0.0
-  cloud_firestore: ^5.0.0
   random_string: ^2.3.1
   pay: ^3.2.1
+  supabase_flutter: ^2.9.0
+  flutter_dotenv: ^5.2.1
+  cached_network_image: ^3.4.1
+  timezone: ^0.10.1
 
 
 dev_dependencies:
@@ -73,12 +74,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - lib/assets/desserts/
-     - lib/assets/drinks/
-     - lib/assets/paneer/
-     - lib/assets/salads/
-     - lib/assets/bread/
-     - lib/assets/
      - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

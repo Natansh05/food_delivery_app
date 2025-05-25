@@ -1,32 +1,64 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:myapp/src/pages/home_page.dart';
-import 'login_or_register.dart';
+// ignore_for_file: library_private_types_in_public_api
 
-class AuthGate extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:myapp/src/pages/home_page.dart';
+import 'package:myapp/src/pages/login_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
 
   @override
+  _AuthGateState createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  bool _hasShownWelcome = false;
+
+  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+    final authService = Supabase.instance.client.auth;
+    return StreamBuilder(
+      stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          User? user = snapshot.data;
-          if (user == null) {
-            // If the user is not authenticated, show the login or register page
-            return LoginOrRegister();
-          } else {
-            // If the user is authenticated, show the home page
-            return HomePage();
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final session = snapshot.hasData ? snapshot.data!.session : null;
+
+        if (session != null && session.user.emailConfirmedAt != null) {
+          // Show snackbar only once per login
+          if (!_hasShownWelcome) {
+            _hasShownWelcome = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (authService.currentUser?.userMetadata == null ||
+                  authService.currentUser!.userMetadata!['name'] == null) {
+                final snackbar =
+                    successSnackBar(context, "Welcome to FlavorFleet 😃", true);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    snackbar); // Don't show snackbar if name is not set
+              } else {
+                final userName = authService.currentUser!.userMetadata!['name'];
+                final snackbar =
+                    successSnackBar(context, "Welcome Back $userName 😃", true);
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              }
+
+              if (authService.currentUser?.userMetadata == null ||
+                  authService.currentUser!.userMetadata!['address'].isEmpty) {
+                final snackbar = successSnackBar(context,
+                    "Please Setup default Address for your convinience", false);
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              }
+              // Reset flag after showing snackbar
+            });
           }
+          return const HomePage();
         } else {
-          // While checking the auth state, show a loading indicator
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          // Reset flag when logged out so snackbar can show again next time
+          _hasShownWelcome = false;
+          return const LoginPage();
         }
       },
     );

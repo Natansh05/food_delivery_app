@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/src/common%20widgets/network_image_box.dart';
 
 import '../models/food.dart';
 
@@ -19,13 +20,10 @@ class FoodTile extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-            margin: const EdgeInsets.all(10.0),
-            // decoration: BoxDecoration(
-            //   //borderRadius: BorderRadius.circular(12.0),
-            //   border: Border.all(
-            //     //color: Theme.of(context).colorScheme.secondary,
-            //   ),
-            // ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface
+            ),
+            margin: const EdgeInsets.all(0.0),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
@@ -34,10 +32,15 @@ class FoodTile extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(food.name),
+                          Text(food.name,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),),
                           Text('₹ ${food.price}',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),),
                           const SizedBox(
                             height: 10.0,
@@ -54,7 +57,7 @@ class FoodTile extends StatelessWidget {
                   // food image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset(food.imagePath,height: 100,),
+                      child: NetworkImageBox(imageUrl: food.imagePath)
                   ),
                 ],
               ),
@@ -63,8 +66,8 @@ class FoodTile extends StatelessWidget {
         ),
         Divider(
           color: Theme.of(context).colorScheme.tertiary,
-          endIndent: 25,
-          indent: 25,
+          endIndent: 15,
+          indent: 15,
         )
       ],
     );

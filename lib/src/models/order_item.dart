@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserOrder {
   final String id;
   final String date;
@@ -22,22 +20,6 @@ class UserOrder {
     required this.time,
     required this.items,
   });
-
-  factory UserOrder.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-    return UserOrder(
-      id: doc.id,
-      date: data['Date'] ?? '',
-      totalCost: (data['Total Price'] ?? 0).toDouble(),
-      paymentMode: data['Mode of Payment'] ?? 'Unknown',
-      deliveryType: data['Delivery Status'] ?? 'Unknown',
-      receipt: data['Order'] ?? 'Unknown',
-      time: data['Time'] ?? 'Unknown',
-      note: data['Note'] ?? 'No notes were left',
-      items:  (data['No. of Items'] ?? 0).toInt(),
-    );
-  }
 }
 
 class OrderItem {

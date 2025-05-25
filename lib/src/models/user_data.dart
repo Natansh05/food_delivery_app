@@ -1,58 +1,62 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../Services/auth/auth_service.dart';
 
 class UserData with ChangeNotifier {
   String _userName = '';
+  String _userAddress = '';
   String _phoneNum = '';
-  bool _del = true;
-  bool _cod = true;
   late String uid = '';
 
   final _authService = AuthService();
 
-  UserData() {
-    uid = _authService.getCurrentUser()!.uid;
-    updatePhoneNum();
+  UserData();
+  Future<void> initialize() async {
+    final user = _authService.getCurrentUser();
+    if (user != null) {
+      uid = user.id;
+
+      final profileData = await Supabase.instance.client
+          .from('profiles')
+          .select()
+          .eq('id', uid)
+          .single();
+
+      // Only overwrite if fields are missing
+      _userName = profileData['name'];
+      _phoneNum = profileData['phone'];
+      _userAddress = profileData['address'];
+
+      // Step 3: Update metadata in Supabase
+      await Supabase.instance.client.auth.updateUser(UserAttributes(
+        data: {
+          'name': _userName,
+          'phone': _phoneNum,
+          'address': _userAddress,
+        },
+      ));
+      notifyListeners();
+    } else {
+      throw Exception('User is not logged in');
+    }
   }
 
   String get userName => _userName;
   String get phoneNum => _phoneNum;
-  bool get delivery => _del;
-  bool get cash => _cod;
+  String get userAddress => _userAddress;
 
   void setUserName(String name) {
     _userName = name;
     notifyListeners();
   }
 
-  void setDelivery(bool isDel) {
-    _del = isDel;
-    notifyListeners();
-  }
-
-  void setCod(bool isCod) {
-    _cod = isCod;
+  void setUserAddress(String address) {
+    _userAddress = address;
     notifyListeners();
   }
 
   void setPhoneNum(String phone) {
     _phoneNum = phone;
     notifyListeners();
-  }
-
-  Future<void> updatePhoneNum() async {
-    try {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      if (userDoc.exists) {
-        _phoneNum = userDoc['Phone'] ?? '';
-        _userName = userDoc['Name'] ?? '';
-        notifyListeners();
-      }
-    } catch (e) {
-      // Handle errors here
-      print('Error updating phone number: $e');
-    }
   }
 }

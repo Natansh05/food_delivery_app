@@ -22,7 +22,7 @@ class BillDetailsCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       elevation: 4,
-      color: theme.cardColor,
+      color: theme.colorScheme.primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -31,7 +31,9 @@ class BillDetailsCard extends StatelessWidget {
           children: [
             Text(
               "Bill Details",
-              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
             const Divider(height: 20),
             _buildRow("Item Total", itemTotal, theme),
@@ -50,6 +52,7 @@ class BillDetailsCard extends StatelessWidget {
   Widget _buildRow(String label, double value, ThemeData theme, {bool isBold = false}) {
     final textStyle = theme.textTheme.bodyMedium?.copyWith(
       fontWeight: isBold ? FontWeight.w600 : FontWeight.normal,
+      color: theme.colorScheme.onPrimary,
     );
 
     return Row(

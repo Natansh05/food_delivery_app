@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/database/firestore.dart';
-import '../../Services/auth/auth_service.dart';
-import '../models/order_item.dart'; // Assuming you have an Order model
-import 'order_details.dart'; // Import the detailed page
+import 'package:myapp/Services/database/supabase.dart';
+import 'package:myapp/src/common%20widgets/order_tile.dart';
+import 'package:myapp/src/pages/order_details.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class PastOrdersPage extends StatefulWidget {
   const PastOrdersPage({super.key});
@@ -13,56 +12,67 @@ class PastOrdersPage extends StatefulWidget {
 }
 
 class _PastOrdersPageState extends State<PastOrdersPage> {
-  final _authService = AuthService();
-  final FirestoreService firestoreService = FirestoreService();
+  final DatabaseService _databaseService = DatabaseService();
 
+  List<dynamic> pastOrders = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchPastOrders();
+  }
+
+  void fetchPastOrders() async {
+    final orders = await _databaseService.fetchOrders();
+    setState(() {
+      pastOrders = orders;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('O R D E R  H I S T O R Y'),
+        title: Text('O R D E R  H I S T O R Y',
+        style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.bold,
+            ),),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getOrderStream(
-            _authService.getCurrentUser()!.uid),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No past orders found.'));
-          }
-          final orders = snapshot.data!.docs.map((doc) {
-            return UserOrder.fromFirestore(doc);
-          }).toList();
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : pastOrders.isEmpty
+              ? Center(child: Text("No past orders found"))
+              : ListView.builder(
+                  itemCount: pastOrders.length,
+                  itemBuilder: (context, index) {
+                    final order = pastOrders[index];
+                    final orderId = order['id'];
+                    var total = order['amount'];
 
-          return ListView.builder(
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              final order = orders[index];
-              return ListTile(
-                title: Text(
-                    'Order - ${order.time} - \$${order.totalCost.toStringAsFixed(
-                        2)}'),
-                subtitle: Text('Items: ${order.items} | ${order.date}'),
-                trailing: Icon(Icons.arrow_forward),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => OrderDetailPage(order: order),
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
+                    final date = DateTime.parse(order['created_at']);
+                    final formattedDate = tz.TZDateTime.from(date, tz.getLocation('Asia/Kolkata'));
+                    return OrderTile(
+                      orderId: orderId,
+                      total: total,
+                      date: formattedDate,
+                      onTap: () {
+                        Navigator.push(context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsPage(orderId: orderId),
+                          ),
+                        ).then((_) {
+                          fetchPastOrders();
+                        });
+                      },
+                    );
+                  },
+                ),
     );
   }
 }
-

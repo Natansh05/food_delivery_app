@@ -1,210 +1,223 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/Services/database/firestore.dart';
+import 'package:myapp/src/common%20widgets/progress_indicator.dart';
+import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:myapp/src/models/user_data.dart';
+import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String phone;
-  final String Adress;
+  final String address;
   final String name;
 
-  const EditProfilePage({super.key, 
+  const EditProfilePage({
+    super.key,
     required this.phone,
-    required this.Adress,
+    required this.address,
     required this.name,
-});
-
+  });
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-
 class _EditProfilePageState extends State<EditProfilePage> {
-  final AuthService _authService = AuthService();
-  final FirestoreService db = FirestoreService();
-  User? user;
+  final AuthService authService = AuthService();
+  late final User? user;
   late String userEmail = "";
   String userPhone = "";
-  String userAdress = "";
+  String userAddress = "";
   late String userName = "";
-  // Initial values for the profile fields
-  final TextEditingController nameController = TextEditingController(text: "John Doe");
-  final TextEditingController emailController = TextEditingController(text: "john.doe@example.com");
-  final TextEditingController phoneController = TextEditingController(text: "Not Specified Yet");
-  final TextEditingController addressController = TextEditingController(text: "Not Specified Yet");
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    user = _authService.getCurrentUser();
-    if (user != null) { // Ensure user is not null before accessing properties
+    user = authService.getCurrentUser();
+    if (user != null) {
       userEmail = user!.email ?? 'No email available';
       userName = widget.name;
       nameController.text = userName;
-      emailController.text = userEmail; // Set email controller to user email
+      emailController.text = userEmail;
       phoneController.text = widget.phone;
-      addressController.text = widget.Adress;
+      addressController.text = widget.address;
+    }
+  }
+
+  Future<void> updateUserData(
+      String address, String name, String phoneNumber) async {
+    final uid = user?.id;
+
+    if (uid == null) return;
+    debugPrint("User ID: $uid");
+    final response = await Supabase.instance.client
+        .from('profiles')
+        .update({
+          'name': name,
+          'phone': phoneNumber,
+          'address': address,
+        })
+        .eq('id', uid)
+        .select();
+
+    if (response.isEmpty) {
+      final snackbar =
+          successSnackBar(context, "Profile Updation Failed", false);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     } else {
-      userEmail = 'No email available';
-      userPhone = 'No phone number available';
-      userName = 'No name available';
+      final snackbar = successSnackBar(
+        context,
+        "Profile Updated Successfully",
+        true,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      await Provider.of<UserData>(context,listen : false).initialize();
     }
   }
-
-  Future<void> fetchUserData() async {
-    if (user != null) {
-      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-      setState(() {
-        userName = userData['Name'] ?? 'No name available';
-        userPhone = userData['Phone'] ?? 'No phone number available';
-        userAdress = userData['Address'] ?? 'No address available';
-      });
-    }
-  }
-
- Future<void> updateUserData(User? user, String email, String address, String name,
-     String phoneNumber) async{
-   final FirestoreService db = FirestoreService();
-   Map<String, dynamic> updateUserInfo = {
-     "Email": email,
-     "Name": name,
-     "Phone Number": phoneNumber,
-     "Id": user!.uid,
-     "Adress" : address,
-   };
-
-   db.updateUserDetails(updateUserInfo,user.uid);
- }
-
-
-
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          'E D I T  P R O F I L E',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          'E D I T    P R O F I L E',
+          style: TextStyle(color: colorScheme.onSurface,fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 20),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: colorScheme.secondary,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildProfileHeader(context),
-            SizedBox(height: 16),
-            _buildProfileForm(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileHeader(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: 75,
-          backgroundImage: AssetImage('lib/assets/profile_picture.png'),
-          onBackgroundImageError: (exception, stackTrace) {
-            print('Error loading image: $exception');
-          },
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: GestureDetector(
-            onTap: () {
-              // Add functionality to change the profile picture
-            },
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              radius: 20,
-              child: Icon(
-                Icons.camera_alt,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 20,
+            const SizedBox(height: 30),
+            Center(
+              child: Stack(
+                children: [
+                  // const CircleAvatar(
+                  //   radius: 75,
+                  //   backgroundImage:
+                  //       AssetImage('lib/assets/profile_picture.png'),
+                  // ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   right: 0,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       // Add logic to update profile image
+                  //     },
+                  //     child: CircleAvatar(
+                  //       backgroundColor: colorScheme.secondary,
+                  //       radius: 20,
+                  //       child: Icon(Icons.camera_alt,
+                  //           color: colorScheme.onPrimary),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
               ),
             ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileForm(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField('Full Name', nameController, Icons.person),
-          SizedBox(height: 10),
-          // _buildTextField('E-Mail', emailController, Icons.email),
-          SizedBox(height: 10),
-          _buildTextField('Phone No', phoneController, Icons.phone),
-          SizedBox(height: 10),
-          _buildTextField('Default Address', addressController, Icons.home),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              userEmail = emailController.text;
-              userPhone = phoneController.text;
-              userAdress = addressController.text;
-              userName = nameController.text;
-              updateUserData(user, userEmail, userAdress, userName, userPhone);
-              // Implement update logic here
-              // Example: updateUserProfile(nameController.text, emailController.text, phoneController.text, addressController.text);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              textStyle: TextStyle(fontSize: 16),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Full Name',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon:
+                          Icon(Icons.person, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      labelText: 'Phone No',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon: Icon(Icons.phone, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Default Address',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon: Icon(Icons.home, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (nameController.text.isEmpty ||
+                          phoneController.text.isEmpty ||
+                          addressController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          successSnackBar(
+                              context, "Please fill all the fields", false),
+                        );
+                        return;
+                      }
+                      showLoadingDialog(context);
+                      await updateUserData(addressController.text.trim(),
+                          nameController.text.trim(), phoneController.text.trim());
+                      hideLoadingDialog(context);
+                      Navigator.pop(context, true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
+                    ),
+                    child: const Text('Edit Profile'),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Joined on Supabase',
+                    style: TextStyle(
+                      color: colorScheme.onPrimary.withOpacity(0.7),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      // Add delete logic if needed
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                    child: const Text('Delete'),
+                  )
+                ],
+              ),
             ),
-            child: Text('Edit Profile'),
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Joined 31 October 2022',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-            ),
-          ),
-          SizedBox(height: 20),
-          TextButton(
-            onPressed: () {
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
-            child: Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+          ],
         ),
       ),
     );

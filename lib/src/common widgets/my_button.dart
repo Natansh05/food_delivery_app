@@ -25,7 +25,7 @@ class MyButton extends StatelessWidget {
         child: Center(
             child: Text(text,
             style: TextStyle(
-                color: Theme.of(context).colorScheme.inversePrimary,
+                color: Theme.of(context).colorScheme.surface,
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),),

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/my_quantity_selector.dart';
+import 'package:myapp/src/common%20widgets/network_image_box.dart';
 import 'package:myapp/src/models/cart_item.dart';
 import 'package:myapp/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
@@ -60,16 +61,7 @@ class MyCartTile extends StatelessWidget {
                   ),
 
                   // food image
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset(
-                        cartItem.food.imagePath,
-                    height: 100.0,
-                    width: 100.0,),
-                  ),
-
-
-
+                  NetworkImageBox(imageUrl:  cartItem.food.imagePath),
                 ],
               ),
             ),
