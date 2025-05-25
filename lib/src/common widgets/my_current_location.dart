@@ -60,7 +60,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
           // Location Icon
           Icon(
             widget.icon.icon,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onPrimary,
             size: 30,
           ),
           const SizedBox(width: 10),
@@ -69,20 +69,20 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Delivering to:",
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   "$userName, $address",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -91,6 +91,12 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
 
           // Change Button
           TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
             onPressed: () {
               openLocationSearchBox(context);
             },
@@ -98,7 +104,7 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
               "Change",
               style: TextStyle(
                 fontSize: 13,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onSecondary,
               ),
             ),
           ),

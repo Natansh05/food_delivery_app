@@ -15,7 +15,12 @@ class MyReceipt extends StatelessWidget {
       child: Center(
         child: Column(
           children: [
-            const Text('Thank you for placing the order!'),
+            const Text('Thank you for placing the order!',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black54
+                )),
             const SizedBox(height: 25.0),
             Container(
               decoration: BoxDecoration(
@@ -25,7 +30,10 @@ class MyReceipt extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: const EdgeInsets.all(10.0),
-              child: Text(receipt),
+              child: Text(receipt,
+                  style: TextStyle(
+                    color: Colors.black54,
+                  )),
             ),
           ],
         ),

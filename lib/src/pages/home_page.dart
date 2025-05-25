@@ -74,7 +74,9 @@ class _HomePageState extends State<HomePage>
       return const Center(child: Text("No items found in this category"));
     }
 
-    return ListView.builder(
+    return Container(
+    color: Theme.of(context).colorScheme.surface, // or .surface
+    child: ListView.builder(
       itemCount: categoryMenu.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
@@ -87,7 +89,9 @@ class _HomePageState extends State<HomePage>
           ),
         );
       },
-    );
+    ),
+  );
+
   }
 
   @override
@@ -121,11 +125,6 @@ class _HomePageState extends State<HomePage>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Divider(
-                      indent: 25,
-                      endIndent: 25,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
                     const MyCurrentLocation(icon: Icon(Icons.location_on)),
                     const MyDescriptionBox(),
                   ],

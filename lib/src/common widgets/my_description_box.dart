@@ -9,19 +9,15 @@ class MyDescriptionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var myPrimaryTextStyle = TextStyle(
-      color: Theme.of(context).colorScheme.primary,
-    );
-
     var mySecondaryTextStyle = TextStyle(
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.onPrimary,
     );
 
     return Container(
       padding: EdgeInsets.all(8.0),
       margin: EdgeInsets.all(25.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.secondary),
+        border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Row(
@@ -31,7 +27,7 @@ class MyDescriptionBox extends StatelessWidget {
           Column(
             children: [
               Text('20/- Rs',
-              style: myPrimaryTextStyle,),
+              style: mySecondaryTextStyle,),
               Text("Delivery Fee",style: mySecondaryTextStyle,),
             ],
           ),
@@ -40,7 +36,7 @@ class MyDescriptionBox extends StatelessWidget {
           Column(
             children: [
               Text("15-30 mins",
-              style: myPrimaryTextStyle,),
+              style: mySecondaryTextStyle,),
               Text("Delivery time",
               style: mySecondaryTextStyle,),
             ],

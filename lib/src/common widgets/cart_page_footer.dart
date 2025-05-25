@@ -114,7 +114,7 @@ class CartPageFooter extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Theme.of(context).colorScheme.onSurface,
                 ),
                 child: const Text(
                   "Checkout",

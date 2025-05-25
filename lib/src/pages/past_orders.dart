@@ -37,7 +37,7 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
       appBar: AppBar(
         title: Text('O R D E R  H I S T O R Y'),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

@@ -33,10 +33,14 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Order Details"),
+        title: const Text("O R D E R   D E T A I L S",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+            )),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        elevation: 150.0,
       ),
       body: FutureBuilder<List<CartItem>>(
         future: userCartFuture,
@@ -72,7 +76,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -127,6 +131,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         child: Text('Error: ${receiptSnapshot.error}'));
                   }
                   return Card(
+                    color: Colors.white,
                     margin:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     elevation: 3,
@@ -183,7 +188,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).colorScheme.onSurface,
                     ),
                     child: const Text(
                       "Reorder this cart  🍽️",

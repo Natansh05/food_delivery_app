@@ -87,8 +87,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delivery in progress...'),
+        title: const Text('Delivery in progress...',
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
+          ),),
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        elevation: 150.0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -97,16 +103,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
           children: [
             Icon(
               Icons.check_circle_outline,
-              color: theme.colorScheme.primary,
+              color: Colors.green,
               size: 100,
             ),
             const SizedBox(height: 16),
             Text(
-              'Thank you for your order!',
+              'Thank you for placing the order!',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onSurface,
+                color: theme.colorScheme.onPrimary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -134,6 +140,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
             ),
             const SizedBox(height: 10),
             Card(
+              color: Colors.white,
               elevation: 3,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
@@ -168,7 +175,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
+              color: theme.colorScheme.onPrimary,
             ),
           ),
         ],

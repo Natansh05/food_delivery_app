@@ -15,20 +15,20 @@ class MySliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return SliverAppBar(
-        expandedHeight: 340,
+        expandedHeight: 270,
         collapsedHeight: 80,
         floating: false,
         pinned: true,
          actions: actions,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(
           "FLAVOR FLEET",
           style: TextStyle(
             // fontSize: 24.0, // Adjust the font size as needed
             fontWeight: FontWeight.bold, // Use a bold font weight for emphasis
             letterSpacing: 1.2, // Add some letter spacing for clarity
-            color: Theme.of(context).colorScheme.primary, // Set the text color to stand out on the app bar
+            color: Theme.of(context).colorScheme.onPrimary, // Set the text color to stand out on the app bar
           ),
         ),
         centerTitle: true,

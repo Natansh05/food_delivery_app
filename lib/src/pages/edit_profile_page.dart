@@ -84,127 +84,140 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          'E D I T  P R O F I L E',
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          'E D I T    P R O F I L E',
+          style: TextStyle(color: colorScheme.onSurface,fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 20),
         ),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: colorScheme.secondary,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildProfileHeader(context),
-            SizedBox(height: 16),
-            _buildProfileForm(context),
+            const SizedBox(height: 30),
+            Center(
+              child: Stack(
+                children: [
+                  // const CircleAvatar(
+                  //   radius: 75,
+                  //   backgroundImage:
+                  //       AssetImage('lib/assets/profile_picture.png'),
+                  // ),
+                  // Positioned(
+                  //   bottom: 0,
+                  //   right: 0,
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       // Add logic to update profile image
+                  //     },
+                  //     child: CircleAvatar(
+                  //       backgroundColor: colorScheme.secondary,
+                  //       radius: 20,
+                  //       child: Icon(Icons.camera_alt,
+                  //           color: colorScheme.onPrimary),
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Full Name',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon:
+                          Icon(Icons.person, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                      labelText: 'Phone No',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon: Icon(Icons.phone, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Default Address',
+                      labelStyle: TextStyle(
+                        color: colorScheme.secondary.withOpacity(0.7),
+                      ),
+                      prefixIcon: Icon(Icons.home, color: colorScheme.onSurface),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (nameController.text.isEmpty ||
+                          phoneController.text.isEmpty ||
+                          addressController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          successSnackBar(
+                              context, "Please fill all the fields", false),
+                        );
+                        return;
+                      }
+                      showLoadingDialog(context);
+                      await updateUserData(addressController.text.trim(),
+                          nameController.text.trim(), phoneController.text.trim());
+                      hideLoadingDialog(context);
+                      Navigator.pop(context, true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorScheme.primary,
+                      foregroundColor: colorScheme.onPrimary,
+                    ),
+                    child: const Text('Edit Profile'),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Joined on Supabase',
+                    style: TextStyle(
+                      color: colorScheme.onPrimary.withOpacity(0.7),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      // Add delete logic if needed
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                    child: const Text('Delete'),
+                  )
+                ],
+              ),
+            ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileHeader(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        CircleAvatar(
-          radius: 75,
-          backgroundImage: AssetImage('lib/assets/profile_picture.png'),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: GestureDetector(
-            onTap: () {
-              // Implement profile image change logic
-            },
-            child: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              radius: 20,
-              child: Icon(Icons.camera_alt,
-                  color: Theme.of(context).colorScheme.onPrimary, size: 20),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileForm(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          _buildTextField('Full Name', nameController, Icons.person),
-          SizedBox(height: 10),
-          _buildTextField('Phone No', phoneController, Icons.phone),
-          SizedBox(height: 10),
-          _buildTextField('Default Address', addressController, Icons.home),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              if (nameController.text.isEmpty ||
-                  phoneController.text.isEmpty ||
-                  addressController.text.isEmpty) {
-                final snackbar = successSnackBar(
-                    context, "Please fill all the fields", false);
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                return;
-              }
-              showLoadingDialog(context);
-              await updateUserData(
-                addressController.text.trim(),
-                nameController.text.trim(),
-                phoneController.text.trim(),
-              );
-              hideLoadingDialog(context);
-              Navigator.pop(context, true);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.surface,
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              textStyle: TextStyle(fontSize: 16),
-            ),
-            child: Text('Edit Profile'),
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Joined on Supabase',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
-            ),
-          ),
-          SizedBox(height: 20),
-          TextButton(
-            onPressed: () {
-              // Implement account deletion logic if needed
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-      String label, TextEditingController controller, IconData icon) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon, color: Theme.of(context).colorScheme.primary),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30.0),
-          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
     );

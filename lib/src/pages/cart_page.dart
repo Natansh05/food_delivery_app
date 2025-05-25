@@ -18,8 +18,6 @@ class CartPage extends StatelessWidget {
           appBar: AppBar(
             title: const Text("C A R T"),
             centerTitle: true,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Theme.of(context).colorScheme.inversePrimary,
             actions: [
               IconButton(
                 icon: const Icon(Icons.delete),

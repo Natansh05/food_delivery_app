@@ -17,11 +17,11 @@ class MyDrawerTile extends StatelessWidget {
       child: ListTile(
         title: Text(text!,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.onSurface,
         ),),
         leading: Icon(
           icon,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         onTap: onTap,
       ),

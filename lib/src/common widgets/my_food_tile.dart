@@ -20,6 +20,9 @@ class FoodTile extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface
+            ),
             margin: const EdgeInsets.all(0.0),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
@@ -29,10 +32,15 @@ class FoodTile extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(food.name),
+                          Text(food.name,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),),
                           Text('₹ ${food.price}',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),),
                           const SizedBox(
                             height: 10.0,
