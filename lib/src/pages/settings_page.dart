@@ -10,10 +10,11 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('S E T T I N G S',
+        title: Text('S E T T I N G S',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         centerTitle: true,
@@ -29,7 +30,7 @@ class SettingsPage extends StatelessWidget {
             padding: EdgeInsets.all(20.0),
             margin: EdgeInsets.only(left: 25.0, top: 10.0, right: 25.0),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
+              color: Theme.of(context).colorScheme.onSurface,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Row(
@@ -39,7 +40,8 @@ class SettingsPage extends StatelessWidget {
                 Text("Dark Mode ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  fontSize: 18.0,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),),
                 CupertinoSwitch(
                     value: Provider.of<ThemeProvider>(context,listen: true).isDarkMode,

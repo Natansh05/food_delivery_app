@@ -38,9 +38,6 @@ dependencies:
   provider: ^6.1.2
   collection: ^1.18.0
   intl: ^0.19.0
-  firebase_core: ^3.0.0
-  firebase_auth: ^5.0.0
-  cloud_firestore: ^5.0.0
   random_string: ^2.3.1
   pay: ^3.2.1
   supabase_flutter: ^2.9.0

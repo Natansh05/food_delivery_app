@@ -168,6 +168,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
             style: TextStyle(
               fontSize: 16,
               color: theme.colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
             ),
           ),
           Text(

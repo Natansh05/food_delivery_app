@@ -12,7 +12,6 @@ import 'package:timezone/data/latest.dart' as tz;
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  await Firebase.initializeApp();
   tz.initializeTimeZones();
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,

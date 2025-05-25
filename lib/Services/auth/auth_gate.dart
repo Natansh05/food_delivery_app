@@ -16,6 +16,7 @@ class _AuthGateState extends State<AuthGate> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Supabase.instance.client.auth;
     return StreamBuilder(
       stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
@@ -29,9 +30,25 @@ class _AuthGateState extends State<AuthGate> {
           if (!_hasShownWelcome) {
             _hasShownWelcome = true;
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              final snackbar =
-                  successSnackBar(context, "Welcome Back User", true);
-              ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              if (authService.currentUser?.userMetadata == null ||
+                  authService.currentUser!.userMetadata!['name'] == null) {
+                final snackbar =
+                    successSnackBar(context, "Welcome to FlavorFleet 😃", true);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    snackbar); // Don't show snackbar if name is not set
+              } else {
+                final userName = authService.currentUser!.userMetadata!['name'];
+                final snackbar =
+                    successSnackBar(context, "Welcome Back $userName 😃", true);
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              }
+
+              if (authService.currentUser?.userMetadata == null ||
+                  authService.currentUser!.userMetadata!['address'].isEmpty) {
+                final snackbar = successSnackBar(context,
+                    "Please Setup default Address for your convinience", false);
+                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+              }
               // Reset flag after showing snackbar
             });
           }

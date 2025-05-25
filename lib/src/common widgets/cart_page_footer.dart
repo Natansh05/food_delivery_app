@@ -4,6 +4,7 @@ import 'package:myapp/src/models/restaurants.dart';
 import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartPageFooter extends StatelessWidget {
   CartPageFooter({super.key});
@@ -52,11 +53,11 @@ class CartPageFooter extends StatelessWidget {
     return Container(
       height: 130,
       width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onSecondary,
         boxShadow: [
           BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.15),
+            color: Theme.of(context).colorScheme.onTertiary,
             spreadRadius: 1,
             blurRadius: 6,
             offset: Offset(0, -3),
@@ -76,6 +77,16 @@ class CartPageFooter extends StatelessWidget {
               height: 44,
               child: ElevatedButton(
                 onPressed: () {
+                  if(context.read<UserData>().userAddress.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text("Please set your delivery address first."),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {

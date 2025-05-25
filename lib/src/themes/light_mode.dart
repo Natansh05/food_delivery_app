@@ -10,6 +10,8 @@ final ThemeData lightMode = ThemeData(
     secondary: Color.fromARGB(255, 125, 129, 131), 
     onPrimary: Color(0xFF212121),
     onSurface: Color.fromARGB(255, 70, 70, 70),
+    onSecondary: Colors.white,
+    onTertiary: Color(0xFF212121),
   ),
 
 );

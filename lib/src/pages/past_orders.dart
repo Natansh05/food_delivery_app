@@ -35,7 +35,12 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('O R D E R  H I S T O R Y'),
+        title: Text('O R D E R  H I S T O R Y',
+        style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.bold,
+            ),),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.secondary,
       ),

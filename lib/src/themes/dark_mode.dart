@@ -12,33 +12,13 @@ final ThemeData darkMode = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
 
-  scaffoldBackgroundColor: palette[4], // Use darkest as background
-
-  appBarTheme: AppBarTheme(
-    backgroundColor: palette[3],
-    foregroundColor: palette[0], // Text/icon color on AppBar
-    elevation: 0,
-  ),
-
   colorScheme: ColorScheme.dark(
-    primary: palette[1],         // Main interactive color
-    onPrimary: palette[0],       // Text/icon on primary
-    secondary: palette[2],       // Accent color
-    onSecondary: palette[0],     // Text/icon on secondary
-    surface: palette[3],         // Used for cards/sheets
-    onSurface: palette[0],       // Text/icon on surface
-  ),
-
-  cardTheme: CardTheme(
-    color: palette[3],
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
-    ),
-  ),
-
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(color: Colors.white),
-    bodyMedium: TextStyle(color: Color(0xFFB0BEC5)), // subtle white
-    titleLarge: TextStyle(fontWeight: FontWeight.bold),
+    surface: Color.fromRGBO(35, 35, 35, 1),
+    primary:  Color.fromARGB(255, 214, 214, 213),
+    secondary: Color.fromARGB(255, 112, 112, 112), 
+    onPrimary: Color.fromARGB(255, 255, 255, 255),
+    onSurface: Color.fromARGB(255, 152, 152, 152),
+    onSecondary: const Color.fromARGB(255, 48, 48, 48),
+    onTertiary: const Color.fromARGB(255, 231, 231, 231)
   ),
 );
