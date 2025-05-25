@@ -67,7 +67,7 @@ class CartPage extends StatelessWidget {
                     top: 10,
                   ),
                   children: [
-                    ...userCart.map((item) => MyCartTile(cartItem: item)).toList(),
+                    ...userCart.map((item) => MyCartTile(cartItem: item)),
                     const SizedBox(height: 10),
                     BillDetailsCard(
                       itemTotal: restaurant.getTotalPrice(),

@@ -4,7 +4,6 @@ import 'package:myapp/src/models/restaurants.dart';
 import 'package:myapp/src/models/user_data.dart';
 import 'package:myapp/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CartPageFooter extends StatelessWidget {
   CartPageFooter({super.key});

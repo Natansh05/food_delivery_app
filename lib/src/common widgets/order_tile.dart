@@ -50,7 +50,7 @@ class OrderTile extends StatelessWidget {
             Text(
               'Order #$orderId',
               style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                color: theme.colorScheme.onSurface,
               ),
             ),
           ],

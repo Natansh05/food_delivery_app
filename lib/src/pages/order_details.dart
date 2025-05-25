@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class OrderDetailsPage extends StatefulWidget {
   final String orderId;
 
-  const OrderDetailsPage({Key? key, required this.orderId}) : super(key: key);
+  const OrderDetailsPage({super.key, required this.orderId});
 
   @override
   State<OrderDetailsPage> createState() => _OrderDetailsPageState();

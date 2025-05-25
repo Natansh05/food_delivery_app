@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:myapp/src/common%20widgets/success_snackbar.dart';
 import 'package:myapp/src/pages/home_page.dart';
