@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/Services/database/supabase.dart';
 import 'package:myapp/src/common%20widgets/order_tile.dart';
 import 'package:myapp/src/pages/order_details.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class PastOrdersPage extends StatefulWidget {
   const PastOrdersPage({super.key});
@@ -50,10 +51,11 @@ class _PastOrdersPageState extends State<PastOrdersPage> {
                     var total = order['amount'];
 
                     final date = DateTime.parse(order['created_at']);
+                    final formattedDate = tz.TZDateTime.from(date, tz.getLocation('Asia/Kolkata'));
                     return OrderTile(
                       orderId: orderId,
                       total: total,
-                      date: date,
+                      date: formattedDate,
                       onTap: () {
                         Navigator.push(context,
                           MaterialPageRoute(

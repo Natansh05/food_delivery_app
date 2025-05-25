@@ -46,6 +46,7 @@ dependencies:
   supabase_flutter: ^2.9.0
   flutter_dotenv: ^5.2.1
   cached_network_image: ^3.4.1
+  timezone: ^0.10.1
 
 
 dev_dependencies:
