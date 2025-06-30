@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:myapp/src/common%20widgets/custom_cart_item.dart';
-import 'package:myapp/src/common%20widgets/my_current_location.dart';
-import 'package:myapp/src/common%20widgets/my_description_box.dart';
-import 'package:myapp/src/common%20widgets/my_drawer.dart';
-import 'package:myapp/src/common%20widgets/my_food_tile.dart';
-import 'package:myapp/src/common%20widgets/my_sliver_appbar.dart';
-import 'package:myapp/src/common%20widgets/my_tab_bar.dart';
-import 'package:myapp/src/models/food.dart';
-import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/pages/cart_page.dart';
-import 'package:myapp/src/pages/food_page.dart';
-import 'package:myapp/src/models/user_data.dart';
+import 'package:FlavorFleet/src/common%20widgets/custom_cart_item.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_current_location.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_description_box.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_drawer.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_food_tile.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_sliver_appbar.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_tab_bar.dart';
+import 'package:FlavorFleet/src/models/food.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/pages/cart_page.dart';
+import 'package:FlavorFleet/src/pages/food_page.dart';
+import 'package:FlavorFleet/src/models/user_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,23 +75,22 @@ class _HomePageState extends State<HomePage>
     }
 
     return Container(
-    color: Theme.of(context).colorScheme.surface, // or .surface
-    child: ListView.builder(
-      itemCount: categoryMenu.length,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        final food = categoryMenu[index];
-        return FoodTile(
-          food: food,
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => FoodPage(food: food)),
-          ),
-        );
-      },
-    ),
-  );
-
+      color: Theme.of(context).colorScheme.surface, // or .surface
+      child: ListView.builder(
+        itemCount: categoryMenu.length,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          final food = categoryMenu[index];
+          return FoodTile(
+            food: food,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => FoodPage(food: food)),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   @override

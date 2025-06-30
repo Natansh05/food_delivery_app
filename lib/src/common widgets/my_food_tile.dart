@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common%20widgets/network_image_box.dart';
+import 'package:FlavorFleet/src/common%20widgets/network_image_box.dart';
 
 import '../models/food.dart';
 
 class FoodTile extends StatelessWidget {
-
   final Food food;
   final void Function()? onTap;
   const FoodTile({
@@ -20,34 +19,37 @@ class FoodTile extends StatelessWidget {
         GestureDetector(
           onTap: onTap,
           child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface
-            ),
+            decoration:
+                BoxDecoration(color: Theme.of(context).colorScheme.surface),
             margin: const EdgeInsets.all(0.0),
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
                 children: [
                   Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(food.name,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          food.name,
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.onSurface,
-                          ),),
-                          Text('₹ ${food.price}',
+                          ),
+                        ),
+                        Text(
+                          '₹ ${food.price}',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface,
-                          ),),
-                          const SizedBox(
-                            height: 10.0,
                           ),
-                          Text(food.description),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(food.description),
+                      ],
+                    ),
                   ),
 
                   const SizedBox(
@@ -56,9 +58,8 @@ class FoodTile extends StatelessWidget {
 
                   // food image
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                      child: NetworkImageBox(imageUrl: food.imagePath)
-                  ),
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: NetworkImageBox(imageUrl: food.imagePath)),
                 ],
               ),
             ),

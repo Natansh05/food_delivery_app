@@ -1,10 +1,10 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/src/common%20widgets/progress_indicator.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/models/user_data.dart';
+import 'package:FlavorFleet/Services/auth/auth_service.dart';
+import 'package:FlavorFleet/src/common%20widgets/progress_indicator.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -78,7 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         true,
       );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      await Provider.of<UserData>(context,listen : false).initialize();
+      await Provider.of<UserData>(context, listen: false).initialize();
     }
   }
 
@@ -91,7 +91,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
       appBar: AppBar(
         title: Text(
           'E D I T    P R O F I L E',
-          style: TextStyle(color: colorScheme.onSurface,fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 20),
+          style: TextStyle(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+              fontSize: 20),
         ),
         centerTitle: true,
         backgroundColor: colorScheme.secondary,
@@ -153,7 +157,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       labelStyle: TextStyle(
                         color: colorScheme.secondary.withOpacity(0.7),
                       ),
-                      prefixIcon: Icon(Icons.phone, color: colorScheme.onSurface),
+                      prefixIcon:
+                          Icon(Icons.phone, color: colorScheme.onSurface),
                     ),
                     style: TextStyle(
                       color: colorScheme.onSurface,
@@ -167,7 +172,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       labelStyle: TextStyle(
                         color: colorScheme.secondary.withOpacity(0.7),
                       ),
-                      prefixIcon: Icon(Icons.home, color: colorScheme.onSurface),
+                      prefixIcon:
+                          Icon(Icons.home, color: colorScheme.onSurface),
                     ),
                     style: TextStyle(
                       color: colorScheme.onSurface,
@@ -186,8 +192,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return;
                       }
                       showLoadingDialog(context);
-                      await updateUserData(addressController.text.trim(),
-                          nameController.text.trim(), phoneController.text.trim());
+                      await updateUserData(
+                          addressController.text.trim(),
+                          nameController.text.trim(),
+                          phoneController.text.trim());
                       hideLoadingDialog(context);
                       Navigator.pop(context, true);
                     },

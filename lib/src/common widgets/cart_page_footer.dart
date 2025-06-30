@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common widgets/my_current_location.dart';
-import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/models/user_data.dart';
-import 'package:myapp/src/pages/delivery_page.dart';
+import 'package:FlavorFleet/src/common widgets/my_current_location.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/models/user_data.dart';
+import 'package:FlavorFleet/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
 
 class CartPageFooter extends StatelessWidget {
@@ -76,10 +76,11 @@ class CartPageFooter extends StatelessWidget {
               height: 44,
               child: ElevatedButton(
                 onPressed: () {
-                  if(context.read<UserData>().userAddress.isEmpty) {
+                  if (context.read<UserData>().userAddress.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text("Please set your delivery address first."),
+                        content: const Text(
+                            "Please set your delivery address first."),
                         backgroundColor: Colors.red,
                       ),
                     );

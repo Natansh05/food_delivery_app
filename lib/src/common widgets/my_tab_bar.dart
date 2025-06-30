@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/models/food.dart';
+import 'package:FlavorFleet/src/models/food.dart';
 
 class MyTabBar extends StatelessWidget {
   final TabController tabController;
@@ -11,8 +11,8 @@ class MyTabBar extends StatelessWidget {
     required this.categories,
   });
 
-  List<Tab> _buildCategoryTabs(){
-    return categories.map((category){
+  List<Tab> _buildCategoryTabs() {
+    return categories.map((category) {
       return Tab(
         text: category.name, // or category.title, depending on your model
       );
@@ -28,4 +28,3 @@ class MyTabBar extends StatelessWidget {
     );
   }
 }
-

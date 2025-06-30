@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/themes/light_mode.dart';
-import 'package:myapp/src/themes/dark_mode.dart';
+import 'package:FlavorFleet/src/themes/light_mode.dart';
+import 'package:FlavorFleet/src/themes/dark_mode.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData _themeData = lightMode;
@@ -11,6 +11,7 @@ class ThemeProvider with ChangeNotifier {
     _themeData = themeData;
     notifyListeners();
   }
+
   void setLightMode() {
     _themeData = lightMode;
     notifyListeners();
@@ -23,7 +24,4 @@ class ThemeProvider with ChangeNotifier {
       themeData = lightMode;
     }
   }
-
-  
-
 }

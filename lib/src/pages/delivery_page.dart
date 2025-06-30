@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/database/supabase.dart';
-import 'package:myapp/src/common widgets/my_receipt.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/Services/database/supabase.dart';
+import 'package:FlavorFleet/src/common widgets/my_receipt.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import '../models/user_data.dart';
 
@@ -51,12 +51,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
       // Save order to Supabase
       db.placeOrder(context).then((_) {
-        final snackbar =
-            successSnackBar(context, "Your Order was received succesfully $userName", true);
+        final snackbar = successSnackBar(
+            context, "Your Order was received succesfully $userName", true);
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       }).catchError((error) {
-        final snackbar = successSnackBar(
-            context, "Failed to place order: $error", false);
+        final snackbar =
+            successSnackBar(context, "Failed to place order: $error", false);
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
       });
 
@@ -87,11 +87,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delivery in progress...',
-        style: TextStyle(
+        title: const Text(
+          'Delivery in progress...',
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,
-          ),),
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.secondary,
         elevation: 150.0,

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/models/restaurants.dart';
-import 'package:myapp/src/models/user_data.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatefulWidget {
   final Icon icon;
-  const MyCurrentLocation({super.key, this.icon = const Icon(Icons.location_on)});
+  const MyCurrentLocation(
+      {super.key, this.icon = const Icon(Icons.location_on)});
 
   @override
   State<MyCurrentLocation> createState() => _MyCurrentLocationState();

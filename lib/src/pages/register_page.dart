@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/src/common%20widgets/my_button.dart';
-import 'package:myapp/src/common%20widgets/my_textfield.dart';
-import 'package:myapp/src/common%20widgets/progress_indicator.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/pages/login_page.dart';
+import 'package:FlavorFleet/Services/auth/auth_service.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_button.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_textfield.dart';
+import 'package:FlavorFleet/src/common%20widgets/progress_indicator.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
       // Sign up the user
       final response =
           await authService.signUpwithEmailPassword(email, password);
-      
+
       if (response?.user == null) {
         hideLoadingDialog(context);
         final snackbar = successSnackBar(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common widgets/network_image_box.dart';
-import 'package:myapp/src/models/cart_item.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/common widgets/network_image_box.dart';
+import 'package:FlavorFleet/src/models/cart_item.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class DetailsCard extends StatelessWidget {

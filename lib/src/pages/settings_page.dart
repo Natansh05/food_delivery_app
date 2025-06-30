@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/src/themes/theme_provider.dart';
+import 'package:FlavorFleet/src/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -10,7 +10,8 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('S E T T I N G S',
+        title: Text(
+          'S E T T I N G S',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,
@@ -24,7 +25,6 @@ class SettingsPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         children: [
-
           //SWICTH
           Container(
             padding: EdgeInsets.all(20.0),
@@ -36,16 +36,20 @@ class SettingsPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-                Text("Dark Mode ",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18.0,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),),
+                Text(
+                  "Dark Mode ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
                 CupertinoSwitch(
-                    value: Provider.of<ThemeProvider>(context,listen: true).isDarkMode,
-                    onChanged: (value)=>Provider.of<ThemeProvider>(context,listen: false).toggleTheme(),
+                  value: Provider.of<ThemeProvider>(context, listen: true)
+                      .isDarkMode,
+                  onChanged: (value) =>
+                      Provider.of<ThemeProvider>(context, listen: false)
+                          .toggleTheme(),
                 ),
               ],
             ),

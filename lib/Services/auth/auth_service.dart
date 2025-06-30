@@ -1,7 +1,7 @@
-import 'package:myapp/src/themes/theme_provider.dart';
+import 'package:FlavorFleet/src/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {

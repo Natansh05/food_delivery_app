@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/themes/theme_provider.dart';
+import 'package:FlavorFleet/src/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomProgressIndicator extends StatelessWidget {
@@ -14,7 +14,6 @@ class CustomProgressIndicator extends StatelessWidget {
             : Colors.black,
       ),
     );
-
   }
 }
 

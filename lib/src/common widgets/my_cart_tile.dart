@@ -1,22 +1,19 @@
-
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common%20widgets/my_quantity_selector.dart';
-import 'package:myapp/src/common%20widgets/network_image_box.dart';
-import 'package:myapp/src/models/cart_item.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_quantity_selector.dart';
+import 'package:FlavorFleet/src/common%20widgets/network_image_box.dart';
+import 'package:FlavorFleet/src/models/cart_item.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class MyCartTile extends StatelessWidget {
   final CartItem cartItem;
-  const MyCartTile({
-    required this.cartItem,
-    super.key});
+  const MyCartTile({required this.cartItem, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Restaurant>(
-      builder: (context,restaurant,child)=> Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+      builder: (context, restaurant, child) => Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
 
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
@@ -40,28 +37,29 @@ class MyCartTile extends StatelessWidget {
                       Text(cartItem.food.name),
 
                       // food price
-                      Text(' ₹${cartItem.food.price}',
+                      Text(
+                        ' ₹${cartItem.food.price}',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
 
-
                       // quantity changer
                       MyQuantitySelector(
                           food: cartItem.food,
                           quantity: cartItem.quantity,
-                          onDecrement: (){
+                          onDecrement: () {
                             restaurant.removeFromCart(cartItem);
                           },
-                          onIncrement: (){
-                            restaurant.addToCart(cartItem.food, cartItem.selectedAddOns);
+                          onIncrement: () {
+                            restaurant.addToCart(
+                                cartItem.food, cartItem.selectedAddOns);
                           }),
                     ],
                   ),
 
                   // food image
-                  NetworkImageBox(imageUrl:  cartItem.food.imagePath),
+                  NetworkImageBox(imageUrl: cartItem.food.imagePath),
                 ],
               ),
             ),
@@ -69,38 +67,36 @@ class MyCartTile extends StatelessWidget {
             SizedBox(
               height: cartItem.selectedAddOns.isEmpty ? 0 : 60,
               child: ListView(
-                padding: EdgeInsets.only(left: 10,bottom: 10,right: 10),
+                padding: EdgeInsets.only(left: 10, bottom: 10, right: 10),
                 scrollDirection: Axis.horizontal,
-                children: cartItem.selectedAddOns.map((addOn) => Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: FilterChip(
-                      label: Row(
+                children: cartItem.selectedAddOns
+                    .map(
+                      (addOn) => Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilterChip(
+                          label: Row(
+                            children: [
+                              // addOn name
+                              Text(addOn.name),
 
-                        children: [
-                          // addOn name
-                          Text(addOn.name),
-
-
-                          // add on price
-                          Text(' (₹${addOn.price.toString()})'),
-                        ],
-
-                      ),
-                      shape: StadiumBorder(
-                        side: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
+                              // add on price
+                              Text(' (₹${addOn.price.toString()})'),
+                            ],
+                          ),
+                          shape: StadiumBorder(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          onSelected: (value) {},
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
-                      onSelected: (value){
-                      },
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                  ),
-
-                ),
-                ).toList(),
+                    )
+                    .toList(),
               ),
             ),
-
           ],
         ),
       ),

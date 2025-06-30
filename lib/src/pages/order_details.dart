@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/database/supabase.dart';
-import 'package:myapp/src/common%20widgets/details_card.dart';
-import 'package:myapp/src/common%20widgets/my_receipt.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/models/cart_item.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/Services/database/supabase.dart';
+import 'package:FlavorFleet/src/common%20widgets/details_card.dart';
+import 'package:FlavorFleet/src/common%20widgets/my_receipt.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/models/cart_item.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailsPage extends StatefulWidget {

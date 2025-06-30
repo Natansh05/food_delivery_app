@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/src/models/cart_item.dart';
-import 'package:myapp/src/models/food.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/Services/auth/auth_service.dart';
+import 'package:FlavorFleet/src/models/cart_item.dart';
+import 'package:FlavorFleet/src/models/food.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

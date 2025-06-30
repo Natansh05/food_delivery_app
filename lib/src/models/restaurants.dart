@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/src/models/cart_item.dart';
+import 'package:FlavorFleet/src/models/cart_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'food.dart';
 
@@ -21,7 +21,6 @@ class Restaurant extends ChangeNotifier {
   String get deliveryAdress => _deliveryAdress;
   bool get isLoading => _isLoading;
 
-
   Restaurant();
 
   /*
@@ -36,11 +35,11 @@ class Restaurant extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final List<dynamic> response = await Supabase.instance.client
-          .from('categories')
-          .select();
+      final List<dynamic> response =
+          await Supabase.instance.client.from('categories').select();
       _categories.clear();
-      _categories.addAll(response.map((item) => Category.fromMap(item as Map<String, dynamic>)));
+      _categories.addAll(response
+          .map((item) => Category.fromMap(item as Map<String, dynamic>)));
     } catch (e) {
       debugPrint('Error fetching categories: $e');
     }
@@ -49,22 +48,21 @@ class Restaurant extends ChangeNotifier {
     notifyListeners();
   }
 
-
   Future<void> fetchFoods() async {
     if (_isLoading) return;
 
     _isLoading = true;
     notifyListeners();
     try {
-      final List<dynamic> response = await Supabase.instance.client
-      .from('foods')
-      .select('''
+      final List<dynamic> response =
+          await Supabase.instance.client.from('foods').select('''
         id, name, description, image_url, price,
         category:category_id (id, name),
         available_addons:addons (id, name, price)
       ''');
       _menu.clear();
-      _menu.addAll(response.map((item) => Food.fromMap(item as Map<String, dynamic>)));
+      _menu.addAll(
+          response.map((item) => Food.fromMap(item as Map<String, dynamic>)));
     } catch (e) {
       debugPrint('Error fetching foods: $e');
     }
@@ -83,7 +81,8 @@ class Restaurant extends ChangeNotifier {
   void addToCart(Food food, List<AddOn> selectedAddOns) {
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       bool isSameFood = item.food == food;
-      bool isSameAddons = const ListEquality().equals(item.selectedAddOns, selectedAddOns);
+      bool isSameAddons =
+          const ListEquality().equals(item.selectedAddOns, selectedAddOns);
       return isSameFood && isSameAddons;
     });
 
@@ -161,7 +160,8 @@ class Restaurant extends ChangeNotifier {
       receipt.writeln(
           '${cartItem.quantity} x ${cartItem.food.name} : ${_formatPrice(cartItem.food.price)}');
       if (cartItem.selectedAddOns.isNotEmpty) {
-        receipt.writeln('Add-Ons :- ${_formatAddons(cartItem.selectedAddOns)}\n');
+        receipt
+            .writeln('Add-Ons :- ${_formatAddons(cartItem.selectedAddOns)}\n');
       }
     }
 
@@ -175,6 +175,8 @@ class Restaurant extends ChangeNotifier {
   String _formatPrice(double price) => '₹ ${price.toStringAsFixed(2)}';
 
   String _formatAddons(List<AddOn> addons) {
-    return addons.map((addOn) => ' ${addOn.name} : ${_formatPrice(addOn.price)}').join(", ");
+    return addons
+        .map((addOn) => ' ${addOn.name} : ${_formatPrice(addOn.price)}')
+        .join(", ");
   }
 }

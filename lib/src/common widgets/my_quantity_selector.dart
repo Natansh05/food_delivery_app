@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/models/food.dart';
+import 'package:FlavorFleet/src/models/food.dart';
 
 class MyQuantitySelector extends StatelessWidget {
   final int quantity;
@@ -7,29 +7,27 @@ class MyQuantitySelector extends StatelessWidget {
   final VoidCallback onDecrement;
   final VoidCallback onIncrement;
 
-  const MyQuantitySelector({
-    required this.food,
-    required this.quantity,
-    required this.onDecrement,
-    required this.onIncrement,
-    super.key});
+  const MyQuantitySelector(
+      {required this.food,
+      required this.quantity,
+      required this.onDecrement,
+      required this.onIncrement,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(10.0),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.onPrimary,
-        )
-      ),
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.onPrimary,
+          )),
       padding: EdgeInsets.all(10.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           // decrease button
           GestureDetector(
             onTap: onDecrement,
@@ -37,7 +35,6 @@ class MyQuantitySelector extends StatelessWidget {
               Icons.remove,
               size: 20,
               color: Theme.of(context).colorScheme.primary,
-
             ),
           ),
 
@@ -54,7 +51,6 @@ class MyQuantitySelector extends StatelessWidget {
             ),
           ),
 
-
           // increase button
           GestureDetector(
             onTap: onIncrement,
@@ -62,7 +58,6 @@ class MyQuantitySelector extends StatelessWidget {
               Icons.add,
               size: 20,
               color: Theme.of(context).colorScheme.primary,
-
             ),
           )
         ],

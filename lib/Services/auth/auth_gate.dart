@@ -1,9 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common%20widgets/success_snackbar.dart';
-import 'package:myapp/src/pages/home_page.dart';
-import 'package:myapp/src/pages/login_page.dart';
+import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:FlavorFleet/src/pages/home_page.dart';
+import 'package:FlavorFleet/src/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthGate extends StatefulWidget {

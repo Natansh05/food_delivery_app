@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/src/common widgets/bill_details_card.dart';
-import 'package:myapp/src/common widgets/cart_page_footer.dart';
-import 'package:myapp/src/common widgets/my_cart_tile.dart';
-import 'package:myapp/src/models/restaurants.dart';
+import 'package:FlavorFleet/src/common widgets/bill_details_card.dart';
+import 'package:FlavorFleet/src/common widgets/cart_page_footer.dart';
+import 'package:FlavorFleet/src/common widgets/my_cart_tile.dart';
+import 'package:FlavorFleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
@@ -31,7 +31,8 @@ class CartPage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text("Are you sure you want to clear the cart?"),
+                      title: const Text(
+                          "Are you sure you want to clear the cart?"),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),
@@ -51,7 +52,6 @@ class CartPage extends StatelessWidget {
               ),
             ],
           ),
-
           body: userCart.isEmpty
               ? const Center(
                   child: Text(
@@ -76,7 +76,6 @@ class CartPage extends StatelessWidget {
                     ),
                   ],
                 ),
-
           bottomNavigationBar: userCart.isNotEmpty ? CartPageFooter() : null,
         );
       },

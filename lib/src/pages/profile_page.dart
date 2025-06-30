@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Services/auth/auth_service.dart';
-import 'package:myapp/src/pages/edit_profile_page.dart';
+import 'package:FlavorFleet/Services/auth/auth_service.dart';
+import 'package:FlavorFleet/src/pages/edit_profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -138,8 +138,8 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(height: 12),
           Text(
             "Hi $userName 👋",
-            style: theme.textTheme.titleMedium
-                ?.copyWith(color: colorScheme.onPrimary, fontWeight: FontWeight.bold),
+            style: theme.textTheme.titleMedium?.copyWith(
+                color: colorScheme.onPrimary, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
