@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:flavorfleet/Services/auth/auth_gate.dart';
 import 'package:flutter/material.dart';
 import 'package:flavorfleet/Services/auth/auth_service.dart';
 import 'package:flavorfleet/src/common%20widgets/my_button.dart';
@@ -26,6 +27,7 @@ class LoginPage extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
+      
       showLoadingDialog(context);
       final authService = AuthService();
 
@@ -57,19 +59,12 @@ class LoginPage extends StatelessWidget {
       }
 
       hideLoadingDialog(context);
-      final profileres = await Supabase.instance.client
-          .from('profiles')
-          .select()
-          .eq('id', user.id)
-          .single();
-
-      final snackbar = successSnackBar(
+      Navigator.pushReplacement(
         context,
-        "Welcome back ${profileres['name']}",
-        true,
+        MaterialPageRoute(builder: (_) => const AuthGate()),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
+
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,

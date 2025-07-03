@@ -5,7 +5,6 @@ import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
 import 'package:flavorfleet/src/pages/home_page.dart';
 import 'package:flavorfleet/src/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
 
@@ -14,63 +13,60 @@ class AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<AuthGate> {
+  Session? _session;
   bool _hasShownWelcome = false;
 
   @override
-  Widget build(BuildContext context) {
-    final authService = Supabase.instance.client.auth;
-    return StreamBuilder(
-      stream: Supabase.instance.client.auth.onAuthStateChange,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        final session = snapshot.hasData ? snapshot.data!.session : null;
+  void initState() {
+    super.initState();
 
-        if (session != null && session.user.emailConfirmedAt != null) {
-          // Show snackbar only once per login
-          if (!_hasShownWelcome) {
-            _hasShownWelcome = true;
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (authService.currentUser?.userMetadata == null ||
-                  authService.currentUser!.userMetadata!['name'] == null) {
-                final snackbar = successSnackBar(
-                  context,
-                  "Welcome to flavorfleet 😃",
-                  true,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  snackbar,
-                ); // Don't show snackbar if name is not set
-              } else {
-                final userName = authService.currentUser!.userMetadata!['name'];
-                final snackbar = successSnackBar(
-                  context,
-                  "Welcome Back $userName 😃",
-                  true,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              }
+    // Check current session on start
+    final auth = Supabase.instance.client.auth;
+    _session = auth.currentSession;
 
-              if (authService.currentUser?.userMetadata == null ||
-                  authService.currentUser!.userMetadata!['address'].isEmpty) {
-                final snackbar = successSnackBar(
-                  context,
-                  "Please Setup default Address for your convinience",
-                  false,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackbar);
-              }
-              // Reset flag after showing snackbar
-            });
+    // Listen for auth state changes
+    auth.onAuthStateChange.listen((data) {
+      final session = data.session;
+      setState(() {
+        _session = session;
+      });
+
+      if (session != null && !_hasShownWelcome) {
+        _hasShownWelcome = true;
+        final user = session.user;
+        final name = user.userMetadata?['name'];
+        final address = user.userMetadata?['address'];
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final nameSnack = successSnackBar(
+            context,
+            name == null
+                ? "Welcome to flavorfleet 😃"
+                : "Welcome Back $name 😃",
+            true,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(nameSnack);
+
+          if (address == null || (address is String && address.isEmpty)) {
+            final addressSnack = successSnackBar(
+              context,
+              "Please Setup default Address for your convenience",
+              false,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(addressSnack);
           }
-          return const HomePage();
-        } else {
-          // Reset flag when logged out so snackbar can show again next time
-          _hasShownWelcome = false;
-          return const LoginPage();
-        }
-      },
-    );
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_session != null && _session!.user.emailConfirmedAt != null) {
+      return const HomePage();
+    } else {
+      _hasShownWelcome = false;
+      return const LoginPage();
+    }
   }
 }
