@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_quantity_selector.dart';
-import 'package:FlavorFleet/src/common%20widgets/network_image_box.dart';
-import 'package:FlavorFleet/src/models/cart_item.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/common%20widgets/my_quantity_selector.dart';
+import 'package:flavorfleet/src/common%20widgets/network_image_box.dart';
+import 'package:flavorfleet/src/models/cart_item.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class MyCartTile extends StatelessWidget {
@@ -46,15 +46,18 @@ class MyCartTile extends StatelessWidget {
 
                       // quantity changer
                       MyQuantitySelector(
-                          food: cartItem.food,
-                          quantity: cartItem.quantity,
-                          onDecrement: () {
-                            restaurant.removeFromCart(cartItem);
-                          },
-                          onIncrement: () {
-                            restaurant.addToCart(
-                                cartItem.food, cartItem.selectedAddOns);
-                          }),
+                        food: cartItem.food,
+                        quantity: cartItem.quantity,
+                        onDecrement: () {
+                          restaurant.removeFromCart(cartItem);
+                        },
+                        onIncrement: () {
+                          restaurant.addToCart(
+                            cartItem.food,
+                            cartItem.selectedAddOns,
+                          );
+                        },
+                      ),
                     ],
                   ),
 
@@ -89,8 +92,9 @@ class MyCartTile extends StatelessWidget {
                             ),
                           ),
                           onSelected: (value) {},
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
                         ),
                       ),
                     )

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common widgets/my_current_location.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
-import 'package:FlavorFleet/src/models/user_data.dart';
-import 'package:FlavorFleet/src/pages/delivery_page.dart';
+import 'package:flavorfleet/src/common widgets/my_current_location.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/models/user_data.dart';
+import 'package:flavorfleet/src/pages/delivery_page.dart';
 import 'package:provider/provider.dart';
 
 class CartPageFooter extends StatelessWidget {
@@ -17,9 +17,7 @@ class CartPageFooter extends StatelessWidget {
         title: const Text("Update your delivery address"),
         content: TextField(
           controller: textEditingController,
-          decoration: const InputDecoration(
-            hintText: "Enter your new address",
-          ),
+          decoration: const InputDecoration(hintText: "Enter your new address"),
         ),
         actions: [
           // Cancel button
@@ -80,7 +78,8 @@ class CartPageFooter extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text(
-                            "Please set your delivery address first."),
+                          "Please set your delivery address first.",
+                        ),
                         backgroundColor: Colors.red,
                       ),
                     );
@@ -93,7 +92,8 @@ class CartPageFooter extends StatelessWidget {
                       return AlertDialog(
                         title: const Text("Order Confirmation"),
                         content: const Text(
-                            "Are you sure you want to order this cart ?"),
+                          "Are you sure you want to order this cart ?",
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -129,10 +129,7 @@ class CartPageFooter extends StatelessWidget {
                 ),
                 child: const Text(
                   "Checkout",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),

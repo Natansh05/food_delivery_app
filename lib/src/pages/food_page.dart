@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_button.dart';
-import 'package:FlavorFleet/src/common%20widgets/network_image_box.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/common%20widgets/my_button.dart';
+import 'package:flavorfleet/src/common%20widgets/network_image_box.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
 
 import '../models/food.dart';
 
@@ -25,8 +25,11 @@ class _FoodPageState extends State<FoodPage> {
   // method to add to cart
   void addToCart(Food food, Map<AddOn, bool> selectedAddOns) {
     // show snackbar
-    final snackbar =
-        successSnackBar(context, "${food.name} added to cart", true);
+    final snackbar = successSnackBar(
+      context,
+      "${food.name} added to cart",
+      true,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
     // if this method is triggered we will go back to the menu page
@@ -85,9 +88,7 @@ class _FoodPageState extends State<FoodPage> {
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 10.0,
-                      ),
+                      const SizedBox(height: 10.0),
 
                       // food description
                       Text(
@@ -98,12 +99,8 @@ class _FoodPageState extends State<FoodPage> {
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                      const SizedBox(height: 10.0),
+                      Divider(color: Theme.of(context).colorScheme.onPrimary),
 
                       Text(
                         "Add-Ons",
@@ -112,9 +109,7 @@ class _FoodPageState extends State<FoodPage> {
                           fontSize: 16.0,
                         ),
                       ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
+                      const SizedBox(height: 10.0),
 
                       // available addons
                       Container(
@@ -127,34 +122,34 @@ class _FoodPageState extends State<FoodPage> {
                         ),
                         padding: EdgeInsets.zero,
                         child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: widget.food.availableAddOn.length,
-                            itemBuilder: (context, index) {
-                              AddOn addon = widget.food.availableAddOn[index];
-                              return CheckboxListTile(
-                                  checkColor:
-                                      Theme.of(context).colorScheme.onSurface,
-                                  title: Text(addon.name),
-                                  subtitle: Text('₹ ${addon.price}'),
-                                  value: widget.selectedAddons[addon],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      widget.selectedAddons[addon] = value!;
-                                    });
-                                  });
-                            }),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: widget.food.availableAddOn.length,
+                          itemBuilder: (context, index) {
+                            AddOn addon = widget.food.availableAddOn[index];
+                            return CheckboxListTile(
+                              checkColor: Theme.of(
+                                context,
+                              ).colorScheme.onSurface,
+                              title: Text(addon.name),
+                              subtitle: Text('₹ ${addon.price}'),
+                              value: widget.selectedAddons[addon],
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.selectedAddons[addon] = value!;
+                                });
+                              },
+                            );
+                          },
+                        ),
                       ),
-                      const SizedBox(
-                        height: 15.0,
-                      ),
+                      const SizedBox(height: 15.0),
                       MyButton(
-                          onTap: () =>
-                              addToCart(widget.food, widget.selectedAddons),
-                          text: "Add to cart"),
-                      const SizedBox(
-                        height: 25.0,
-                      )
+                        onTap: () =>
+                            addToCart(widget.food, widget.selectedAddons),
+                        text: "Add to cart",
+                      ),
+                      const SizedBox(height: 25.0),
                     ],
                   ),
                 ],

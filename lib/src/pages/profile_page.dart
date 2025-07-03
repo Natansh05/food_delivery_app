@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/auth/auth_service.dart';
-import 'package:FlavorFleet/src/pages/edit_profile_page.dart';
+import 'package:flavorfleet/Services/auth/auth_service.dart';
+import 'package:flavorfleet/src/pages/edit_profile_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -75,8 +75,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   return Center(
                     child: Text(
                       'Error: ${snapshot.error}',
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(color: colorScheme.error),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.error,
+                      ),
                     ),
                   );
                 }
@@ -95,8 +96,9 @@ class _ProfilePageState extends State<ProfilePage> {
           : Center(
               child: Text(
                 'User not logged in',
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(color: colorScheme.onSurface),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
               ),
             ),
     );
@@ -139,13 +141,16 @@ class _ProfilePageState extends State<ProfilePage> {
           Text(
             "Hi $userName 👋",
             style: theme.textTheme.titleMedium?.copyWith(
-                color: colorScheme.onPrimary, fontWeight: FontWeight.bold),
+              color: colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             "✉️ $userEmail",
-            style: theme.textTheme.bodySmall
-                ?.copyWith(color: colorScheme.onSurface),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurface,
+            ),
           ),
         ],
       ),

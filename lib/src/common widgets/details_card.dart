@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common widgets/network_image_box.dart';
-import 'package:FlavorFleet/src/models/cart_item.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/common widgets/network_image_box.dart';
+import 'package:flavorfleet/src/models/cart_item.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class DetailsCard extends StatelessWidget {
   final CartItem cartItem;
 
-  const DetailsCard({
-    required this.cartItem,
-    super.key,
-  });
+  const DetailsCard({required this.cartItem, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +66,10 @@ class DetailsCard extends StatelessWidget {
             // Add-ons (if any)
             if (cartItem.selectedAddOns.isNotEmpty)
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 10,
+                ),
                 child: SizedBox(
                   height: 40,
                   child: ListView(
@@ -84,8 +83,9 @@ class DetailsCard extends StatelessWidget {
                             style: const TextStyle(fontSize: 13),
                           ),
                           shape: const StadiumBorder(),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surface,
                           side: BorderSide(
                             color: Theme.of(context).colorScheme.primary,
                           ),

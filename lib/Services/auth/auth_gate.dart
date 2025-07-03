@@ -1,9 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
-import 'package:FlavorFleet/src/pages/home_page.dart';
-import 'package:FlavorFleet/src/pages/login_page.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/pages/home_page.dart';
+import 'package:flavorfleet/src/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthGate extends StatefulWidget {
@@ -34,21 +34,31 @@ class _AuthGateState extends State<AuthGate> {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (authService.currentUser?.userMetadata == null ||
                   authService.currentUser!.userMetadata!['name'] == null) {
-                final snackbar =
-                    successSnackBar(context, "Welcome to FlavorFleet 😃", true);
+                final snackbar = successSnackBar(
+                  context,
+                  "Welcome to flavorfleet 😃",
+                  true,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(
-                    snackbar); // Don't show snackbar if name is not set
+                  snackbar,
+                ); // Don't show snackbar if name is not set
               } else {
                 final userName = authService.currentUser!.userMetadata!['name'];
-                final snackbar =
-                    successSnackBar(context, "Welcome Back $userName 😃", true);
+                final snackbar = successSnackBar(
+                  context,
+                  "Welcome Back $userName 😃",
+                  true,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
               }
 
               if (authService.currentUser?.userMetadata == null ||
                   authService.currentUser!.userMetadata!['address'].isEmpty) {
-                final snackbar = successSnackBar(context,
-                    "Please Setup default Address for your convinience", false);
+                final snackbar = successSnackBar(
+                  context,
+                  "Please Setup default Address for your convinience",
+                  false,
+                );
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
               }
               // Reset flag after showing snackbar

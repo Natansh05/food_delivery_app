@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/auth/auth_service.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_button.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_textfield.dart';
-import 'package:FlavorFleet/src/common%20widgets/progress_indicator.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
-import 'package:FlavorFleet/src/pages/register_page.dart';
+import 'package:flavorfleet/Services/auth/auth_service.dart';
+import 'package:flavorfleet/src/common%20widgets/my_button.dart';
+import 'package:flavorfleet/src/common%20widgets/my_textfield.dart';
+import 'package:flavorfleet/src/common%20widgets/progress_indicator.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/pages/register_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,8 +18,11 @@ class LoginPage extends StatelessWidget {
 
     Future<void> signUserIn() async {
       if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-        final snackbar =
-            successSnackBar(context, "Please fill in all fields.", false);
+        final snackbar = successSnackBar(
+          context,
+          "Please fill in all fields.",
+          false,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
@@ -33,16 +36,22 @@ class LoginPage extends StatelessWidget {
 
       if (user == null) {
         hideLoadingDialog(context);
-        final snackbar =
-            successSnackBar(context, error ?? "Login failed", false);
+        final snackbar = successSnackBar(
+          context,
+          error ?? "Login failed",
+          false,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
 
       if (user.emailConfirmedAt == null) {
         hideLoadingDialog(context);
-        final snackbar =
-            successSnackBar(context, "Please verify your email.", false);
+        final snackbar = successSnackBar(
+          context,
+          "Please verify your email.",
+          false,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
@@ -70,19 +79,12 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 50.0,
-                ),
+                const SizedBox(height: 50.0),
 
                 //logo
-                const Icon(
-                  Icons.lock_open_rounded,
-                  size: 80.0,
-                ),
+                const Icon(Icons.lock_open_rounded, size: 80.0),
 
-                const SizedBox(
-                  height: 20.0,
-                ),
+                const SizedBox(height: 20.0),
 
                 //tagline
                 Text(
@@ -94,9 +96,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 50.0,
-                ),
+                const SizedBox(height: 50.0),
 
                 //username textfield
                 MyTextField(
@@ -106,9 +106,7 @@ class LoginPage extends StatelessWidget {
                   check: false,
                 ),
 
-                const SizedBox(
-                  height: 20.0,
-                ),
+                const SizedBox(height: 20.0),
 
                 //password
                 MyTextField(
@@ -119,9 +117,7 @@ class LoginPage extends StatelessWidget {
                 ),
 
                 //forgot password ?
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 //forgot password option
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -130,24 +126,18 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Text(
                         'Forgot password ??',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
                   ),
                 ),
 
                 // login
-                const SizedBox(
-                  height: 40.0,
-                ),
+                const SizedBox(height: 40.0),
 
                 MyButton(onTap: signUserIn, text: "SIGN IN !"),
 
-                const SizedBox(
-                  height: 50.0,
-                ),
+                const SizedBox(height: 50.0),
 
                 //not a member ? register
                 Row(
@@ -155,9 +145,7 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Text(
                       "Not a member ?",
-                      style: TextStyle(
-                        color: Colors.grey[700],
-                      ),
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
                     TextButton(
                       onPressed: () {
@@ -170,13 +158,11 @@ class LoginPage extends StatelessWidget {
                       },
                       child: const Text(
                         "Register Now !!",
-                        style: TextStyle(
-                          color: Colors.lightBlueAccent,
-                        ),
+                        style: TextStyle(color: Colors.lightBlueAccent),
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),

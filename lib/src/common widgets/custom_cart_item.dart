@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class CartIconWithBadge extends StatelessWidget {
@@ -14,10 +14,7 @@ class CartIconWithBadge extends StatelessWidget {
     return Stack(
       alignment: Alignment.topRight,
       children: [
-        IconButton(
-          icon: const Icon(Icons.shopping_cart),
-          onPressed: onTap,
-        ),
+        IconButton(icon: const Icon(Icons.shopping_cart), onPressed: onTap),
         if (count > 0)
           Positioned(
             right: 4,
@@ -31,10 +28,7 @@ class CartIconWithBadge extends StatelessWidget {
               constraints: const BoxConstraints(minWidth: 18, minHeight: 18),
               child: Text(
                 '$count',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                ),
+                style: const TextStyle(color: Colors.white, fontSize: 10),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/themes/light_mode.dart';
-import 'package:FlavorFleet/src/themes/dark_mode.dart';
+import 'package:flavorfleet/src/themes/light_mode.dart';
+import 'package:flavorfleet/src/themes/dark_mode.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData _themeData = lightMode;

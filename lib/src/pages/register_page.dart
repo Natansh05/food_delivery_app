@@ -1,17 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/auth/auth_service.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_button.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_textfield.dart';
-import 'package:FlavorFleet/src/common%20widgets/progress_indicator.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
-import 'package:FlavorFleet/src/pages/login_page.dart';
+import 'package:flavorfleet/Services/auth/auth_service.dart';
+import 'package:flavorfleet/src/common%20widgets/my_button.dart';
+import 'package:flavorfleet/src/common%20widgets/my_textfield.dart';
+import 'package:flavorfleet/src/common%20widgets/progress_indicator.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({
-    super.key,
-  });
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -28,7 +26,11 @@ class _RegisterPageState extends State<RegisterPage> {
   String email = "";
 
   Future<void> addUser(
-      User? user, String email, String name, String phoneNumber) async {
+    User? user,
+    String email,
+    String name,
+    String phoneNumber,
+  ) async {
     debugPrint("User ID: ${user!.id}");
 
     await Supabase.instance.client.from('profiles').insert({
@@ -47,7 +49,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (password != confirmPasswordController.text.trim()) {
       final snackbar = successSnackBar(
-          context, "Passwords do not match. Please try again.", false);
+        context,
+        "Passwords do not match. Please try again.",
+        false,
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return;
     }
@@ -56,14 +61,20 @@ class _RegisterPageState extends State<RegisterPage> {
         password.isEmpty ||
         name.isEmpty ||
         phoneNumber.isEmpty) {
-      final snackbar =
-          successSnackBar(context, "Please fill in all fields.", false);
+      final snackbar = successSnackBar(
+        context,
+        "Please fill in all fields.",
+        false,
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return;
     }
     if (password.length < 6) {
       final snackbar = successSnackBar(
-          context, "Password must be at least 6 characters long.", false);
+        context,
+        "Password must be at least 6 characters long.",
+        false,
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return;
     }
@@ -75,13 +86,18 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       // Sign up the user
-      final response =
-          await authService.signUpwithEmailPassword(email, password);
+      final response = await authService.signUpwithEmailPassword(
+        email,
+        password,
+      );
 
       if (response?.user == null) {
         hideLoadingDialog(context);
         final snackbar = successSnackBar(
-            context, "Registration failed. Please try again.", false);
+          context,
+          "Registration failed. Please try again.",
+          false,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackbar);
         return;
       }
@@ -90,12 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         this.email = email;
       });
-      await addUser(
-        response!.user,
-        email,
-        name,
-        phoneNumber,
-      );
+      await addUser(response!.user, email, name, phoneNumber);
       hideLoadingDialog(context);
       final snackbar = successSnackBar(
         context,
@@ -105,14 +116,15 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(
-          builder: (_) => const LoginPage(),
-        ),
+        MaterialPageRoute(builder: (_) => const LoginPage()),
       );
     } catch (e) {
       hideLoadingDialog(context);
       final snackbar = successSnackBar(
-          context, "An error occurred. Please try again.", false);
+        context,
+        "An error occurred. Please try again.",
+        false,
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       debugPrint('Error during registration: $e');
     }
@@ -184,9 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       children: [
                         Text(
                           "Already a member ?",
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                          ),
+                          style: TextStyle(color: Colors.grey[700]),
                         ),
                         TextButton(
                           onPressed: () {
@@ -199,11 +209,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                           child: const Text(
                             "Login Now !!",
-                            style: TextStyle(
-                              color: Colors.lightBlueAccent,
-                            ),
+                            style: TextStyle(color: Colors.lightBlueAccent),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],

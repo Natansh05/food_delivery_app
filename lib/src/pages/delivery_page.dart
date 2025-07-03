@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/database/supabase.dart';
-import 'package:FlavorFleet/src/common widgets/my_receipt.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/Services/database/supabase.dart';
+import 'package:flavorfleet/src/common widgets/my_receipt.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import '../models/user_data.dart';
 
@@ -50,15 +50,24 @@ class _DeliveryPageState extends State<DeliveryPage> {
       String receipt = restaurant.displayCartReceipt();
 
       // Save order to Supabase
-      db.placeOrder(context).then((_) {
-        final snackbar = successSnackBar(
-            context, "Your Order was received succesfully $userName", true);
-        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      }).catchError((error) {
-        final snackbar =
-            successSnackBar(context, "Failed to place order: $error", false);
-        ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      });
+      db
+          .placeOrder(context)
+          .then((_) {
+            final snackbar = successSnackBar(
+              context,
+              "Your Order was received succesfully $userName",
+              true,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          })
+          .catchError((error) {
+            final snackbar = successSnackBar(
+              context,
+              "Failed to place order: $error",
+              false,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackbar);
+          });
 
       // Store info in state variables
       setState(() {
@@ -80,19 +89,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
     if (!_dataLoaded) {
       // Show a loader while waiting for data
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Delivery in progress...',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.5,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.5),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -103,11 +107,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.check_circle_outline,
-              color: Colors.green,
-              size: 100,
-            ),
+            Icon(Icons.check_circle_outline, color: Colors.green, size: 100),
             const SizedBox(height: 16),
             Text(
               'Thank you for placing the order!',
@@ -123,11 +123,20 @@ class _DeliveryPageState extends State<DeliveryPage> {
             _buildInfoRow('Phone:', _userPhone, theme),
             _buildInfoRow('Total Items:', _items.toString(), theme),
             _buildInfoRow(
-                'Delivery Fee:', '₹${_deliveryFee.toStringAsFixed(2)}', theme),
+              'Delivery Fee:',
+              '₹${_deliveryFee.toStringAsFixed(2)}',
+              theme,
+            ),
             _buildInfoRow(
-                'Handling Fee:', '₹${_handlingFee.toStringAsFixed(2)}', theme),
+              'Handling Fee:',
+              '₹${_handlingFee.toStringAsFixed(2)}',
+              theme,
+            ),
             _buildInfoRow(
-                'Total Cost:', '₹${_totalCost.toStringAsFixed(2)}', theme),
+              'Total Cost:',
+              '₹${_totalCost.toStringAsFixed(2)}',
+              theme,
+            ),
             const SizedBox(height: 30),
             Align(
               alignment: Alignment.centerLeft,
@@ -145,12 +154,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
               color: Colors.white,
               elevation: 3,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: MyReceipt(
-                    receipt:
-                        _receipt), // Pass receipt here if MyReceipt supports it
+                  receipt: _receipt,
+                ), // Pass receipt here if MyReceipt supports it
               ),
             ),
           ],

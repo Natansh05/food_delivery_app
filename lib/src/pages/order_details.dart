@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/database/supabase.dart';
-import 'package:FlavorFleet/src/common%20widgets/details_card.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_receipt.dart';
-import 'package:FlavorFleet/src/common%20widgets/success_snackbar.dart';
-import 'package:FlavorFleet/src/models/cart_item.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/Services/database/supabase.dart';
+import 'package:flavorfleet/src/common%20widgets/details_card.dart';
+import 'package:flavorfleet/src/common%20widgets/my_receipt.dart';
+import 'package:flavorfleet/src/common%20widgets/success_snackbar.dart';
+import 'package:flavorfleet/src/models/cart_item.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailsPage extends StatefulWidget {
@@ -33,11 +33,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("O R D E R   D E T A I L S",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
-            )),
+        title: const Text(
+          "O R D E R   D E T A I L S",
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.5),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.secondary,
         elevation: 150.0,
@@ -82,10 +81,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 ),
               ),
               const SizedBox(height: 10),
-              Divider(
-                color: theme.colorScheme.primary,
-                thickness: 0.5,
-              ),
+              Divider(color: theme.colorScheme.primary, thickness: 0.5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Align(
@@ -128,19 +124,24 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   }
                   if (receiptSnapshot.hasError) {
                     return Center(
-                        child: Text('Error: ${receiptSnapshot.error}'));
+                      child: Text('Error: ${receiptSnapshot.error}'),
+                    );
                   }
                   return Card(
                     color: Colors.white,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 8,
+                    ),
                     elevation: 3,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: MyReceipt(
-                          receipt: receiptSnapshot.data ?? "No receipt found"),
+                        receipt: receiptSnapshot.data ?? "No receipt found",
+                      ),
                     ),
                   );
                 },
@@ -158,7 +159,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           return AlertDialog(
                             title: const Text("Reorder Confirmation"),
                             content: const Text(
-                                "Are you sure you want to reorder this food?"),
+                              "Are you sure you want to reorder this food?",
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -169,13 +171,18 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
-                                  Provider.of<Restaurant>(context,
-                                          listen: false)
-                                      .updateCart(userCart);
-                                  final snackbar = successSnackBar(context,
-                                      "Food Items Added to your cart", true);
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackbar);
+                                  Provider.of<Restaurant>(
+                                    context,
+                                    listen: false,
+                                  ).updateCart(userCart);
+                                  final snackbar = successSnackBar(
+                                    context,
+                                    "Food Items Added to your cart",
+                                    true,
+                                  );
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackbar);
                                 },
                                 child: const Text("Confirm"),
                               ),
@@ -192,10 +199,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                     ),
                     child: const Text(
                       "Reorder this cart  🍽️",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),

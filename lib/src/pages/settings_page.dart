@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/themes/theme_provider.dart';
+import 'package:flavorfleet/src/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -45,11 +45,14 @@ class SettingsPage extends StatelessWidget {
                   ),
                 ),
                 CupertinoSwitch(
-                  value: Provider.of<ThemeProvider>(context, listen: true)
-                      .isDarkMode,
-                  onChanged: (value) =>
-                      Provider.of<ThemeProvider>(context, listen: false)
-                          .toggleTheme(),
+                  value: Provider.of<ThemeProvider>(
+                    context,
+                    listen: true,
+                  ).isDarkMode,
+                  onChanged: (value) => Provider.of<ThemeProvider>(
+                    context,
+                    listen: false,
+                  ).toggleTheme(),
                 ),
               ],
             ),

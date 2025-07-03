@@ -4,8 +4,8 @@
 // import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 // import 'package:provider/provider.dart';
 
-// import 'package:FlavorFleet/main.dart';
-// import 'package:FlavorFleet/src/themes/theme_provider.dart'; // Adjust import as needed
+// import 'package:flavorfleet/main.dart';
+// import 'package:flavorfleet/src/themes/theme_provider.dart'; // Adjust import as needed
 
 // class FakeFirebaseApp extends Fake implements FirebaseAppPlatform {
 //   @override

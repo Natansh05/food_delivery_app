@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:FlavorFleet/src/common%20widgets/custom_cart_item.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_current_location.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_description_box.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_drawer.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_food_tile.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_sliver_appbar.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_tab_bar.dart';
-import 'package:FlavorFleet/src/models/food.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
-import 'package:FlavorFleet/src/pages/cart_page.dart';
-import 'package:FlavorFleet/src/pages/food_page.dart';
-import 'package:FlavorFleet/src/models/user_data.dart';
+import 'package:flavorfleet/src/common%20widgets/custom_cart_item.dart';
+import 'package:flavorfleet/src/common%20widgets/my_current_location.dart';
+import 'package:flavorfleet/src/common%20widgets/my_description_box.dart';
+import 'package:flavorfleet/src/common%20widgets/my_drawer.dart';
+import 'package:flavorfleet/src/common%20widgets/my_food_tile.dart';
+import 'package:flavorfleet/src/common%20widgets/my_sliver_appbar.dart';
+import 'package:flavorfleet/src/common%20widgets/my_tab_bar.dart';
+import 'package:flavorfleet/src/models/food.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/pages/cart_page.dart';
+import 'package:flavorfleet/src/pages/food_page.dart';
+import 'package:flavorfleet/src/models/user_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -60,10 +60,12 @@ class _HomePageState extends State<HomePage>
 
   // Filter menu by category
   List<Food> _filterMenuByCategory(Category category, List<Food> menu) {
-    List<Food> filtered =
-        menu.where((food) => food.category.id == category.id).toList();
+    List<Food> filtered = menu
+        .where((food) => food.category.id == category.id)
+        .toList();
     debugPrint(
-        "Filtered menu for category ${category.name}: ${filtered.length} items");
+      "Filtered menu for category ${category.name}: ${filtered.length} items",
+    );
     return filtered;
   }
 
@@ -133,8 +135,9 @@ class _HomePageState extends State<HomePage>
             body: TabBarView(
               controller: _tabController,
               children: restaurant.categories
-                  .map((category) =>
-                      _buildCategoryTab(restaurant.menu, category))
+                  .map(
+                    (category) => _buildCategoryTab(restaurant.menu, category),
+                  )
                   .toList(),
             ),
           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/auth/auth_service.dart';
-import 'package:FlavorFleet/src/models/cart_item.dart';
-import 'package:FlavorFleet/src/models/food.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/Services/auth/auth_service.dart';
+import 'package:flavorfleet/src/models/cart_item.dart';
+import 'package:flavorfleet/src/models/food.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -23,11 +23,10 @@ class DatabaseService {
     final totalAmount = restaurant.getTotalPrice().toStringAsFixed(2);
 
     // 1. Insert into orders
-    final orderResponse = await supabase.from('orders').insert({
-      'user_id': user.id,
-      'amount': totalAmount,
-      'order_bill': bill,
-    }).select('id'); // Get order_id from response
+    final orderResponse = await supabase
+        .from('orders')
+        .insert({'user_id': user.id, 'amount': totalAmount, 'order_bill': bill})
+        .select('id'); // Get order_id from response
 
     final orderId = orderResponse.first['id'];
 
@@ -36,12 +35,15 @@ class DatabaseService {
       final quantity = cartItem.quantity;
       final itemPrice = cartItem.food.price;
 
-      final orderItemResponse = await supabase.from('order_items').insert({
-        'order_id': orderId,
-        'food_item_id': foodItemId,
-        'quantity': quantity,
-        'item_price': itemPrice,
-      }).select('id');
+      final orderItemResponse = await supabase
+          .from('order_items')
+          .insert({
+            'order_id': orderId,
+            'food_item_id': foodItemId,
+            'quantity': quantity,
+            'item_price': itemPrice,
+          })
+          .select('id');
 
       final orderItemId = orderItemResponse.first['id'];
 
@@ -75,12 +77,14 @@ class DatabaseService {
   }
 
   Future<Food?> fetchFoodById(String foodId) async {
-    final List<dynamic> response =
-        await Supabase.instance.client.from('foods').select('''
+    final List<dynamic> response = await Supabase.instance.client
+        .from('foods')
+        .select('''
         id, name, description, image_url, price,
         category:category_id (id, name),
         available_addons:addons (id, name, price)
-      ''').eq('id', foodId);
+      ''')
+        .eq('id', foodId);
     return response.isNotEmpty
         ? Food.fromMap(response.first as Map<String, dynamic>)
         : null;
@@ -112,22 +116,25 @@ class DatabaseService {
 
     if (orderItemsResponse.isEmpty) {
       throw Exception('Failed to fetch order items');
-    }
-    else{
+    } else {
       debugPrint('Fetched order items: ${orderItemsResponse.length} items');
     }
 
     final orderItemsData = orderItemsResponse as List<dynamic>;
     if (orderItemsData.isEmpty) return [];
 
-    final orderItemIds =
-        orderItemsData.map((item) => item['id'] as String).toList();
+    final orderItemIds = orderItemsData
+        .map((item) => item['id'] as String)
+        .toList();
 
     final orderAddonsResponse = await client
         .from('order_item_addons')
         .select('order_item_id, addon_id')
-        .filter('order_item_id', 'in',
-            '(${orderItemIds.map((id) => id).join(',')})');
+        .filter(
+          'order_item_id',
+          'in',
+          '(${orderItemIds.map((id) => id).join(',')})',
+        );
 
     if (orderAddonsResponse.isEmpty) {
       throw Exception('Failed to fetch order addons');
@@ -164,11 +171,13 @@ class DatabaseService {
           .where((addon) => selectedAddOnIds.contains(addon.id))
           .toList();
 
-      cartItems.add(CartItem(
-        food: food,
-        quantity: quantity,
-        selectedAddOns: selectedAddOns,
-      ));
+      cartItems.add(
+        CartItem(
+          food: food,
+          quantity: quantity,
+          selectedAddOns: selectedAddOns,
+        ),
+      );
     }
 
     return cartItems;

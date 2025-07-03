@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
-import 'package:FlavorFleet/src/models/user_data.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/models/user_data.dart';
 import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatefulWidget {
   final Icon icon;
-  const MyCurrentLocation(
-      {super.key, this.icon = const Icon(Icons.location_on)});
+  const MyCurrentLocation({
+    super.key,
+    this.icon = const Icon(Icons.location_on),
+  });
 
   @override
   State<MyCurrentLocation> createState() => _MyCurrentLocationState();
@@ -16,38 +18,37 @@ class _MyCurrentLocationState extends State<MyCurrentLocation> {
   final TextEditingController textEditingController = TextEditingController();
   void openLocationSearchBox(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Text("Update your delivery address"),
-              content: TextField(
-                controller: textEditingController,
-                decoration: InputDecoration(
-                  hintText: "Enter your new address",
-                ),
-              ),
-              actions: [
-                // cancel button
-                MaterialButton(
-                  onPressed: () {
-                    textEditingController.clear();
-                    Navigator.pop(context);
-                  },
-                  child: const Text(" CANCEL "),
-                ),
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Update your delivery address"),
+        content: TextField(
+          controller: textEditingController,
+          decoration: InputDecoration(hintText: "Enter your new address"),
+        ),
+        actions: [
+          // cancel button
+          MaterialButton(
+            onPressed: () {
+              textEditingController.clear();
+              Navigator.pop(context);
+            },
+            child: const Text(" CANCEL "),
+          ),
 
-                // save button
-                MaterialButton(
-                  onPressed: () {
-                    String newAdress = textEditingController.text;
-                    context.read<UserData>().setUserAddress(newAdress);
-                    context.read<Restaurant>().updateDeliveryAdress(newAdress);
-                    Navigator.pop(context);
-                    textEditingController.clear();
-                  },
-                  child: const Text(" SAVE "),
-                )
-              ],
-            ));
+          // save button
+          MaterialButton(
+            onPressed: () {
+              String newAdress = textEditingController.text;
+              context.read<UserData>().setUserAddress(newAdress);
+              context.read<Restaurant>().updateDeliveryAdress(newAdress);
+              Navigator.pop(context);
+              textEditingController.clear();
+            },
+            child: const Text(" SAVE "),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/src/common widgets/bill_details_card.dart';
-import 'package:FlavorFleet/src/common widgets/cart_page_footer.dart';
-import 'package:FlavorFleet/src/common widgets/my_cart_tile.dart';
-import 'package:FlavorFleet/src/models/restaurants.dart';
+import 'package:flavorfleet/src/common widgets/bill_details_card.dart';
+import 'package:flavorfleet/src/common widgets/cart_page_footer.dart';
+import 'package:flavorfleet/src/common widgets/my_cart_tile.dart';
+import 'package:flavorfleet/src/models/restaurants.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
@@ -17,12 +17,14 @@ class CartPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            title: Text("C A R T",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5,
-                  color: Theme.of(context).colorScheme.onSurface,
-                )),
+            title: Text(
+              "C A R T",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.5,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
             centerTitle: true,
             actions: [
               IconButton(
@@ -32,7 +34,8 @@ class CartPage extends StatelessWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text(
-                          "Are you sure you want to clear the cart?"),
+                        "Are you sure you want to clear the cart?",
+                      ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(context),

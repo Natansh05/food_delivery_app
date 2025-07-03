@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
-import 'package:FlavorFleet/src/models/cart_item.dart';
+import 'package:flavorfleet/src/models/cart_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'food.dart';
 
@@ -35,11 +35,13 @@ class Restaurant extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final List<dynamic> response =
-          await Supabase.instance.client.from('categories').select();
+      final List<dynamic> response = await Supabase.instance.client
+          .from('categories')
+          .select();
       _categories.clear();
-      _categories.addAll(response
-          .map((item) => Category.fromMap(item as Map<String, dynamic>)));
+      _categories.addAll(
+        response.map((item) => Category.fromMap(item as Map<String, dynamic>)),
+      );
     } catch (e) {
       debugPrint('Error fetching categories: $e');
     }
@@ -54,15 +56,17 @@ class Restaurant extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final List<dynamic> response =
-          await Supabase.instance.client.from('foods').select('''
+      final List<dynamic> response = await Supabase.instance.client
+          .from('foods')
+          .select('''
         id, name, description, image_url, price,
         category:category_id (id, name),
         available_addons:addons (id, name, price)
       ''');
       _menu.clear();
       _menu.addAll(
-          response.map((item) => Food.fromMap(item as Map<String, dynamic>)));
+        response.map((item) => Food.fromMap(item as Map<String, dynamic>)),
+      );
     } catch (e) {
       debugPrint('Error fetching foods: $e');
     }
@@ -81,8 +85,10 @@ class Restaurant extends ChangeNotifier {
   void addToCart(Food food, List<AddOn> selectedAddOns) {
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
       bool isSameFood = item.food == food;
-      bool isSameAddons =
-          const ListEquality().equals(item.selectedAddOns, selectedAddOns);
+      bool isSameAddons = const ListEquality().equals(
+        item.selectedAddOns,
+        selectedAddOns,
+      );
       return isSameFood && isSameAddons;
     });
 
@@ -158,10 +164,12 @@ class Restaurant extends ChangeNotifier {
 
     for (final cartItem in _cart) {
       receipt.writeln(
-          '${cartItem.quantity} x ${cartItem.food.name} : ${_formatPrice(cartItem.food.price)}');
+        '${cartItem.quantity} x ${cartItem.food.name} : ${_formatPrice(cartItem.food.price)}',
+      );
       if (cartItem.selectedAddOns.isNotEmpty) {
-        receipt
-            .writeln('Add-Ons :- ${_formatAddons(cartItem.selectedAddOns)}\n');
+        receipt.writeln(
+          'Add-Ons :- ${_formatAddons(cartItem.selectedAddOns)}\n',
+        );
       }
     }
 

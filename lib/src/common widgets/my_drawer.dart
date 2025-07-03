@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:FlavorFleet/Services/auth/auth_service.dart';
-import 'package:FlavorFleet/src/common%20widgets/my_drawer_tile.dart';
-import 'package:FlavorFleet/src/pages/login_page.dart';
+import 'package:flavorfleet/Services/auth/auth_service.dart';
+import 'package:flavorfleet/src/common%20widgets/my_drawer_tile.dart';
+import 'package:flavorfleet/src/pages/login_page.dart';
 
 import '../pages/past_orders.dart';
 import '../pages/profile_page.dart';
@@ -19,14 +19,17 @@ class MyDrawer extends StatelessWidget {
       try {
         await authService.signOut(context);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
       } catch (e) {
         showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  title: Text(e.toString()),
-                ));
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            title: Text(e.toString()),
+          ),
+        );
       }
     }
 
@@ -61,39 +64,49 @@ class MyDrawer extends StatelessWidget {
 
           // profile list tile
           MyDrawerTile(
-              text: 'P R O F I L E',
-              icon: Icons.person,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()));
-              }),
+            text: 'P R O F I L E',
+            icon: Icons.person,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+          ),
 
           // Past Orders Tile
           MyDrawerTile(
-              text: 'O R D E R  H I S T O R Y',
-              icon: Icons.calendar_month_outlined,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PastOrdersPage()));
-              }),
+            text: 'O R D E R  H I S T O R Y',
+            icon: Icons.calendar_month_outlined,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PastOrdersPage()),
+              );
+            },
+          ),
 
           MyDrawerTile(
-              text: 'S E T T I N G S',
-              icon: Icons.settings,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsPage()));
-              }),
+            text: 'S E T T I N G S',
+            icon: Icons.settings,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
 
           const Spacer(),
           //logout
           MyDrawerTile(
-              text: 'L O G O U T', icon: Icons.logout_sharp, onTap: signOut),
+            text: 'L O G O U T',
+            icon: Icons.logout_sharp,
+            onTap: signOut,
+          ),
           const SizedBox(height: 25.0),
         ],
       ),
