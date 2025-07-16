@@ -60,21 +60,6 @@ Designed to ensure minimal redundancy and optimal query performance.
 
 ---
 
-## 📦 Repository Structure
-
-```bash
-FlavorFleet/
-├── lib/
-│   ├── screens/
-│   ├── models/
-│   ├── services/
-│   ├── providers/
-│   └── widgets/
-├── assets/
-├── pubspec.yaml
-└── README.md
-```
-
 ## 🚧 Future Enhancements
 
 - 🔔 **Push Notifications** for Order Status  
@@ -86,7 +71,7 @@ FlavorFleet/
 
 ## 🔗 Related Repositories
 
-- [Admin Dashboard GitHub Repo](https://github.com/Natansh05/flavorfleet-admin) <!-- Replace with actual link -->
+- [FlavorFleet Admin Panel](https://github.com/Natansh05/flavorfleet-admin)
 
 ---
 
