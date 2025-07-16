@@ -39,7 +39,7 @@ In parallel, an **Admin Dashboard** has been developed to enable the restaurant 
 | Frontend     | Flutter            |
 | Backend/Auth | Supabase (PostgreSQL + Auth) |
 | State Mgmt   | Provider (Flutter) |
-| Hosting      | Supabase / Firebase (Optional) |
+| Hosting      | Supabase |
 | Design       | Custom-built Flutter UI |
 
 ---
