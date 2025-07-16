@@ -98,3 +98,11 @@ FlavorFleet/
 
 ---
 
+## 📸 Screenshots
+
+
+<p float="left">
+  <img src="screenshots/home_page.jpeg" width="200"/>
+  <img src="screenshots/cart_page.jpeg" width="200"/>
+  <img src="screenshots/past_order_details.jpeg" width="200"/>
+</p>
